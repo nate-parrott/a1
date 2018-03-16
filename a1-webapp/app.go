@@ -14,6 +14,7 @@ import (
 func main() {
 	http.HandleFunc("/", handle)
 	http.HandleFunc("/subscribe", subscribe)
+	http.HandleFunc("/firestoreTest", firestoreTest)
 	appengine.Main()
 }
 
