@@ -20,6 +20,10 @@ type Article struct {
 	Timestamp int64 `firestore:"timestamp"`
 }
 
+func (a Article) Id() string {
+	return articleId(a.Url)
+}
+
 func articleId(url string) string {
 	urlData := ([]byte)(normalizeUrl(url))
 	hash := sha256.Sum256(urlData)
