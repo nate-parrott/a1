@@ -3,9 +3,9 @@ package main
 import (
 	firebase "firebase.google.com/go"
 	"context"
-	"net/http"
-	"fmt"
-	"google.golang.org/appengine"
+	//"net/http"
+	//"fmt"
+	//"google.golang.org/appengine"
 	"google.golang.org/api/option"
 	"cloud.google.com/go/firestore"
 )
@@ -25,17 +25,17 @@ func createFirestoreClient(ctx context.Context) *firestore.Client {
 	return client
 }
 
-func firestoreTest(w http.ResponseWriter, r *http.Request) {
-	ctx := appengine.NewContext(r)
-	client := createFirestoreClient(ctx)
-	defer client.Close()
-	_, _, err := client.Collection("Tests").Add(ctx, map[string]interface{}{
-		"aString": "hey",
-		"aNumber": 20,
-	})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Fprintln(w, "ok!")
-
-}
+//func firestoreTest(w http.ResponseWriter, r *http.Request) {
+//	ctx := appengine.NewContext(r)
+//	client := createFirestoreClient(ctx)
+//	defer client.Close()
+//	_, _, err := client.Collection("Tests").Add(ctx, map[string]interface{}{
+//		"aString": "hey",
+//		"aNumber": 20,
+//	})
+//	if err != nil {
+//		panic(err)
+//	}
+//	fmt.Fprintln(w, "ok!")
+//
+//}

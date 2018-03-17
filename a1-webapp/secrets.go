@@ -8,6 +8,8 @@ import (
 type Secrets struct {
 	Test string `json:"test"`
 	TwitterTokens []TwitterToken `json:"twitter_tokens"`
+	MercuryKey string `json:"mercury_key"`
+	GoogleKey string `json:"google_key"`
 }
 
 type TwitterToken struct {

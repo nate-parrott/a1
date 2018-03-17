@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/base.css" />
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<h2>Subscriptions</h2>
+
+<form action="/subscribe" method="POST">
+    <h3>Test subscribe</h3>
+    <input name="handle" placeholder="Twitter handle" />
+    <input name="user_id" placeholder="User ID" />
+    <input type="submit" />
+</form>
+
+<form action="/admin/test_source_fetch" method="POST">
+    <h3>Test source fetch</h3>
+    <input name="handle" placeholder="Twitter handle" />
+    <input type="submit" />
+</form>
+
+<h2>Services</h2>
+
+<form action="/admin/test_mercury" method="POST">
+    <h3>test mercury fetch</h3>
+    <p>URLs, newline-separated:</p>
+    <textarea name="urls"></textarea>
+    <input type="submit" />
+</form>
+
+<form action="/admin/test_amp" method="POST">
+    <h3>test amp fetch</h3>
+    <p>URLs, newline-separated:</p>
+    <textarea name="urls"></textarea>
+    <input type="submit" />
+</form>
+
+<h2>Tasks</h2>
+
+<form action="/admin/restart_fetch_tasks" method="POST">
+    <h3>Restart fetch tasks</h3>
+    <input type="submit" />
+</form>
+
+<form action="/admin/test_fetch_task" method="POST">
+    <h3>Run fetch task</h3>
+    <p>(User segment 0, source segment 0)</p>
+    <input type="submit" />
+</form>
+
+</body>
+</html>
