@@ -20,6 +20,7 @@ func setupAdminDashboard() {
 	http.HandleFunc("/admin/restart_fetch_tasks", restartFetchTasks)
 	http.HandleFunc("/admin/test_mercury", testMercury)
 	http.HandleFunc("/admin/test_amp", testAmp)
+	http.HandleFunc("/admin/test_ingest", testIngest)
 }
 
 func adminDashboard(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,18 @@ func testAmp(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	urls := strings.Split(r.Form.Get("urls"), "\n")
 	fmt.Fprintf(w, spew.Sdump(fetchAmpMulti(ctx, urls)))
+}
+
+func testIngest(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	client := createFirestoreClient(ctx)
+	stubs := []ArticleStub{}
+	r.ParseForm()
+	for _, url := range strings.Split(r.Form.Get("urls"), "\n") {
+		stubs = append(stubs, ArticleStub{Url: normalizeUrl(url), Source: "test"})
+	}
+	ingestArticles(ctx, client, stubs)
+	fmt.Fprintf(w, "done")
 }
 
 func restartFetchTasks(w http.ResponseWriter, r *http.Request) {

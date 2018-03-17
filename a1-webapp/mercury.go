@@ -73,3 +73,4 @@ func fetchMercuryMulti(ctx context.Context, urls []string) map[string]MercuryRes
 	}
 	return responsesByUrl
 }
+
