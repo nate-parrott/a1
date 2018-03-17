@@ -34,9 +34,10 @@ func adminDashboard(w http.ResponseWriter, r *http.Request) {
 func testSourceFetch(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	handle := r.Form.Get("handle")
-	// a := Article{Url:"http://google.com", Title: "Test"}
-	tweets := recentArticlesFromTwitterAccount(handle, appengine.NewContext(r))
-	data, _ := json.Marshal(tweets)
+	ctx := appengine.NewContext(r)
+	client := createFirestoreClient(ctx)
+	articles := recentArticlesFromTwitterAccount(handle, ctx, client)
+	data, _ := json.Marshal(articles)
 	w.Write(data)
 }
 

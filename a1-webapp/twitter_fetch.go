@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/url"
 	"google.golang.org/appengine/log"
+	"cloud.google.com/go/firestore"
 )
 
 func (t TwitterToken) Api(ctx context.Context) *anaconda.TwitterApi  {
@@ -28,22 +29,38 @@ func twitterFetchTask(ctx context.Context, userSegment int, sourceSegment int) {
 	// TODO
 }
 
-func recentArticlesFromTwitterAccount(handle string, ctx context.Context) []anaconda.Tweet {
+func recentArticlesFromTwitterAccount(handle string, ctx context.Context, client *firestore.Client) map[string]Article {
 	api := secrets().TwitterTokens[0].Api(ctx)
 	defer api.Close()
 
 	log.Errorf(ctx, "handle: %v", handle)
 	v := url.Values{}
-	v.Set("count", "1")
+	v.Set("count", "5")
 	v.Set("screen_name", handle)
 	tweets, err := api.GetUserTimeline(v)
 	if err != nil {
 		log.Errorf(ctx, "Error fetching tweets: %v", err.Error())
-		return []anaconda.Tweet{}
+		return map[string]Article{}
 	}
-	return tweets
-	//articles := []Article{}
-	//for _, tweet := range tweets {
-	//
-	//}
+	articles := ingestArticles(ctx, client, articleStubsFromTweets(handle, tweets))
+	return articles
+}
+func articleStubsFromTweets(handle string, tweets []anaconda.Tweet) []ArticleStub {
+	stubs := []ArticleStub{}
+	for _, tweet := range tweets {
+		if !tweet.Retweeted {
+			articleUrl := urlFromTweet(tweet)
+			if len(articleUrl) > 0 {
+				stubs = append(stubs, ArticleStub{Url: normalizeUrl(articleUrl), Source: handle})
+			}
+		}
+	}
+	return stubs
+}
+
+func urlFromTweet(tweet anaconda.Tweet) string {
+	for _, entity := range tweet.Entities.Urls {
+		return entity.Expanded_url
+	}
+	return ""
 }
