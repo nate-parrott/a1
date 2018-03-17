@@ -25,10 +25,6 @@ func subscribeOnTwitter(ctx context.Context, handle string) {
 	api.FollowUser(handle)
 }
 
-func twitterFetchTask(ctx context.Context, userSegment int, sourceSegment int) {
-	// TODO
-}
-
 func recentArticlesFromTwitterAccount(handle string, ctx context.Context, client *firestore.Client) map[string]Article {
 	api := secrets().TwitterTokens[0].Api(ctx)
 	defer api.Close()
@@ -42,16 +38,17 @@ func recentArticlesFromTwitterAccount(handle string, ctx context.Context, client
 		log.Errorf(ctx, "Error fetching tweets: %v", err.Error())
 		return map[string]Article{}
 	}
-	articles := ingestArticles(ctx, client, articleStubsFromTweets(handle, tweets))
+	articles := ingestArticles(ctx, client, articleStubsFromTweets(tweets), false)
 	return articles
 }
-func articleStubsFromTweets(handle string, tweets []anaconda.Tweet) []ArticleStub {
+
+func articleStubsFromTweets(tweets []anaconda.Tweet) []ArticleStub {
 	stubs := []ArticleStub{}
 	for _, tweet := range tweets {
 		if !tweet.Retweeted {
 			articleUrl := urlFromTweet(tweet)
 			if len(articleUrl) > 0 {
-				stubs = append(stubs, ArticleStub{Url: normalizeUrl(articleUrl), Source: handle})
+				stubs = append(stubs, ArticleStub{Url: normalizeUrl(articleUrl), Source: tweet.User.ScreenName})
 			}
 		}
 	}
@@ -63,4 +60,16 @@ func urlFromTweet(tweet anaconda.Tweet) string {
 		return entity.Expanded_url
 	}
 	return ""
+}
+
+func fetchNewArticles(ctx context.Context, client *firestore.Client, sourceSegment uint32) map[string]Article {
+	api := secrets().TwitterTokens[sourceSegment].Api(ctx)
+	params := url.Values{}
+	params.Set("count", "10")
+	tweets, err := api.GetHomeTimeline(params)
+	if err != nil {
+		log.Errorf(ctx, "Error fetching source timeline for segment %v: %v", sourceSegment, err.Error())
+		return map[string]Article{}
+	}
+	return ingestArticles(ctx, client, articleStubsFromTweets(tweets), true)
 }

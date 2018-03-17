@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc("/", handle)
 	setupSubscribe()
 	setupAdminDashboard()
+	setupTasks()
 	appengine.Main()
 }
 

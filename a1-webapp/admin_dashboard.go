@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"strings"
 	"github.com/davecgh/go-spew/spew"
+	"google.golang.org/appengine/taskqueue"
+	"time"
 )
 
 var tpl = template.Must(template.ParseGlob("html/*.html"))
@@ -43,7 +45,7 @@ func testSourceFetch(w http.ResponseWriter, r *http.Request) {
 
 func fetchTaskTest(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
-	twitterFetchTask(ctx, 0, 0)
+	updateTask(ctx, 0, 0)
 	fmt.Fprintf(w, "Done!")
 }
 
@@ -69,10 +71,25 @@ func testIngest(w http.ResponseWriter, r *http.Request) {
 	for _, url := range strings.Split(r.Form.Get("urls"), "\n") {
 		stubs = append(stubs, ArticleStub{Url: normalizeUrl(url), Source: "test"})
 	}
-	ingestArticles(ctx, client, stubs)
-	fmt.Fprintf(w, "done")
+	ingestArticles(ctx, client, stubs, false)
+	fmt.Fprintln(w, "done")
 }
 
 func restartFetchTasks(w http.ResponseWriter, r *http.Request) {
-	// TODO
+	ctx := appengine.NewContext(r)
+	taskqueue.Purge(ctx, UPDATE_TASK_QUEUE)
+	time.Sleep(2 * time.Second)
+
+	tasks := []*taskqueue.Task{}
+
+	for userSegment := 0; userSegment < USER_SEGMENTS; userSegment++ {
+		for sourceSegment := 0; sourceSegment < TWITTER_SEGMENTS; sourceSegment++ {
+			tasks = append(tasks, newUpdateTask(userSegment, sourceSegment, true))
+		}
+	}
+
+	taskqueue.AddMulti(ctx, tasks, UPDATE_TASK_QUEUE)
+
+	fmt.Fprintln(w, "done")
 }
+

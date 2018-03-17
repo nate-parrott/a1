@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
+	"context"
+	"cloud.google.com/go/firestore"
 )
 
 func setupSubscribe() {
@@ -14,6 +16,7 @@ func setupSubscribe() {
 type Subscription struct {
 	UserId string `firestore:"user_id"`
 	Source string `firestore:"source"`
+	SegmentId uint32 `firestore:"segment_id"`
 }
 
 func (s Subscription) Id() string {
@@ -28,7 +31,7 @@ func subscribe(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	client := createFirestoreClient(ctx)
 
-	sub := Subscription{UserId:userId, Source:handle}
+	sub := Subscription{UserId:userId, Source:handle, SegmentId: computeSegment(userId, USER_SEGMENTS)}
 	_, err := client.Collection("Subscriptions").Doc(sub.Id()).Set(ctx, sub)
 	if err != nil {
 		log.Errorf(ctx, "Unable to create subscription for %v to %v", userId, handle)
@@ -51,3 +54,21 @@ func subscribe(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintln(w, "ok")
 }
+
+func getSubscribers(ctx context.Context, client *firestore.Client, source string, segment uint32) []string {
+	 query := client.Collection("Subscriptions").Query.Where("source", "==", source).Where("segment_id", "==", segment)
+	 docs, err := query.Documents(ctx).GetAll()
+	 if err != nil {
+	 	log.Errorf(ctx, "Error finding subscribers for %v", source)
+	 	return []string{}
+	 }
+	 userIds := []string{}
+	 for _, doc := range docs {
+	 	sub := Subscription{}
+	 	err := doc.DataTo(&sub)
+	 	if err == nil {
+	 		userIds = append(userIds, sub.UserId)
+		}
+	 }
+	 return userIds
+	 }

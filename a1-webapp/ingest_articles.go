@@ -39,6 +39,10 @@ func createArticle(ctx context.Context, client *firestore.Client, url string, so
 }
 
 func ingestNewArticles(ctx context.Context, client *firestore.Client, stubs []ArticleStub) map[string]Article {
+	if len(stubs) == 0 {
+		return map[string]Article{}
+	}
+
 	urls := []string{}
 	for _, stub := range stubs {
 		urls = append(urls, stub.Url)
@@ -81,7 +85,8 @@ func ingestNewArticles(ctx context.Context, client *firestore.Client, stubs []Ar
 	return articles
 }
 
-func ingestArticles(ctx context.Context, client *firestore.Client, stubs []ArticleStub) map[string]Article {
+// if `ignoreExisting` is set, already-ingested articles won't be returned along with the new ones
+func ingestArticles(ctx context.Context, client *firestore.Client, stubs []ArticleStub, ignoreExisting bool) map[string]Article {
 	urls := []string{}
 	for _, stub := range stubs {
 		urls = append(urls, stub.Url)
@@ -94,11 +99,14 @@ func ingestArticles(ctx context.Context, client *firestore.Client, stubs []Artic
 			stubsForNewArticles = append(stubsForNewArticles, stub)
 		}
 	}
-	if len(stubsForNewArticles) > 0 {
-		newArticles := ingestNewArticles(ctx, client, stubsForNewArticles)
-		for k, v := range newArticles {
-			existingArticles[k] = v
+	newArticles := ingestNewArticles(ctx, client, stubsForNewArticles)
+
+	if !ignoreExisting {
+		// merge existing articles in:
+		for k, v := range existingArticles {
+			newArticles[k] = v
 		}
 	}
-	return existingArticles
+
+	return newArticles
 }

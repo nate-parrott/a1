@@ -1,0 +1,6 @@
+total_storage_limit: 100M
+
+queue:
+- name: update
+  rate: 5/s
+
