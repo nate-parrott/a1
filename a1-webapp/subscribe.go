@@ -41,6 +41,7 @@ func subscribe(w http.ResponseWriter, r *http.Request) {
 
 	// put some recent articles from this source into the user's feed:
 	articles := recentArticlesFromTwitterAccount(handle, ctx, client)
+	log.Infof(ctx, "During subscription, grabbed %v articles from %v", len(articles), handle)
 	distributionChan := make(chan bool)
 	for _, article := range articles {
 		go distributeArticleToUser(ctx, client, userId, article, distributionChan)

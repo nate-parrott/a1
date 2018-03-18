@@ -29,7 +29,6 @@ func recentArticlesFromTwitterAccount(handle string, ctx context.Context, client
 	api := secrets().TwitterTokens[0].Api(ctx)
 	defer api.Close()
 
-	log.Errorf(ctx, "handle: %v", handle)
 	v := url.Values{}
 	v.Set("count", "5")
 	v.Set("screen_name", handle)
