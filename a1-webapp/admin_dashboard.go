@@ -88,7 +88,10 @@ func restartFetchTasks(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	taskqueue.AddMulti(ctx, tasks, UPDATE_TASK_QUEUE)
+	_, err := taskqueue.AddMulti(ctx, tasks, UPDATE_TASK_QUEUE)
+	if err != nil {
+		log.Errorf(ctx, "Error enqueueing update tasks: %v", err.Error())
+	}
 
 	fmt.Fprintln(w, "done")
 }
