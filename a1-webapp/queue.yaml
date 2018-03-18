@@ -4,3 +4,5 @@ queue:
 - name: update
   rate: 5/s
 
+- name: warmUrl
+  rate: 1/s

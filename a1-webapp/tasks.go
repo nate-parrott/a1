@@ -9,13 +9,18 @@ import (
 	"google.golang.org/appengine"
 	"time"
 	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/urlfetch"
+	"context"
 )
 
 const UPDATE_TASK_QUEUE = "update"
-const UPDATE_INTERVAL = time.Minute * 10
+const WARM_URL_TASK_QUEUE = "warmUrl"
+
+const UPDATE_INTERVAL = time.Minute * 5
 
 func setupTasks() {
 	http.HandleFunc("/admin/tasks/update", updateTaskHandler)
+	http.HandleFunc("/admin/tasks/warm_url", warmUrlHandler)
 }
 
 func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +38,27 @@ func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	taskqueue.Add(ctx, newUpdateTask(userSegment, sourceSegment, false), UPDATE_TASK_QUEUE)
 	log.Infof(ctx, "Finished update task for source segment %v and user segment %v", sourceSegment, userSegment)
 
+	fmt.Fprintln(w, "ok!")
+}
+
+func enqueueWarmUrlTasks(ctx context.Context, urls []string) {
+	tasks := []*taskqueue.Task{}
+	for _, urlString := range urls {
+		params := url.Values{}
+		params.Set("url", urlString)
+		task := taskqueue.NewPOSTTask("/admin/tasks/warm_url", params)
+		tasks = append(tasks, task)
+		log.Infof(ctx, "Enqueuing warm URL task for url: %v", urlString)
+	}
+	taskqueue.AddMulti(ctx, tasks, WARM_URL_TASK_QUEUE)
+}
+
+func warmUrlHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	url := r.Form.Get("url")
+	ctx := appengine.NewContext(r)
+	urlfetch.Client(ctx).Get(url)
+	log.Infof(ctx, "Finished warming url: %v", url)
 	fmt.Fprintln(w, "ok!")
 }
 
