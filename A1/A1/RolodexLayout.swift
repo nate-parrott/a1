@@ -24,9 +24,15 @@ class RolodexLayout : UICollectionViewLayout {
         return 140
     }
     
+    let _decelRamp: CGFloat = 60
+    let _decelFactor: CGFloat = 2
+    var _additionalHeightToAccountForDecelRamp: CGFloat {
+        return _decelRamp * (1 - 1.0 / _decelFactor)
+    }
+    
     override var collectionViewContentSize: CGSize {
         guard let collection = collectionView else { return CGSize.zero }
-        return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)))
+        return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)) + _additionalHeightToAccountForDecelRamp)
     }
     
     let _loadCellsAbove = 3
@@ -52,9 +58,12 @@ class RolodexLayout : UICollectionViewLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attribs = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-        attribs.frame = CGRect(x: 0, y: _offset(forIndex: indexPath.item) + collectionView!.contentOffset.y, width: collectionView!.bounds.width, height: collectionView!.bounds.height)
+        let offset = _offset(forIndex: indexPath.item)
+        attribs.frame = CGRect(x: 0, y: offset + collectionView!.contentOffset.y, width: collectionView!.bounds.width, height: collectionView!.bounds.height)
         attribs.zIndex = indexPath.item
-        attribs.alpha = _fade(forIndex: indexPath.item)
+        attribs.alpha = 1 - _amountToFade(forIndex: indexPath.item)
+        let zTranslate = 1 - offset / collectionView!.bounds.height
+        attribs.transform3D = CATransform3DMakeTranslation(0, 0, zTranslate * -30)
         return attribs
     }
     
@@ -62,15 +71,27 @@ class RolodexLayout : UICollectionViewLayout {
         return collectionView!.contentOffset.y / _scrollDistPerItem
     }
     
-    func _fade(forIndex index: Int) -> CGFloat {
-        if CGFloat(index) < _scrolledToIndex {
-            return max(0, min(1, 2 - (_scrolledToIndex - CGFloat(index))))
-        } else {
+    func _amountToFade(forIndex index: Int) -> CGFloat {
+        let t = _scrolledToIndex
+        let fadeStartAtT = CGFloat(index + 1)
+        let fadeEndAtT = CGFloat(index + 2)
+        if t < fadeStartAtT {
+            return 0
+        } else if t > fadeEndAtT {
             return 1
+        } else {
+            return (t - fadeStartAtT) / (fadeEndAtT - fadeStartAtT)
         }
     }
     
     func _offset(forIndex index: Int) -> CGFloat {
-        return max(0, (CGFloat(index) - _scrolledToIndex) * _scrollDistPerItem)
+        var offset = max(0, (CGFloat(index) - _scrolledToIndex) * _scrollDistPerItem)
+        if offset < _decelRamp {
+            let t = (_decelRamp - offset) / _decelRamp
+            let decelFn = decelerationFunction(factor: _decelFactor)
+            offset = _decelRamp - decelFn(t) * _decelRamp
+        }
+        offset -= _additionalHeightToAccountForDecelRamp
+        return offset
     }
 }

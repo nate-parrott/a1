@@ -25,6 +25,11 @@ class ArticlesView : UIView, UICollectionViewDataSource {
         collectionView.register(ArticleCell.self, forCellWithReuseIdentifier: "article")
         collectionView.dataSource = self
         collectionView.clipsToBounds = false
+        
+        var transform = CATransform3DIdentity
+        transform.m34 = 1 / -500
+        collectionView.layer.sublayerTransform = transform
+        
         var a = [API.Article]()
         while a.count < 20 {
             a.append(API.Article())
@@ -34,7 +39,9 @@ class ArticlesView : UIView, UICollectionViewDataSource {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.frame = UIEdgeInsetsInsetRect(bounds, safeAreaInsets)
+        var insets = safeAreaInsets
+        insets.bottom = 0
+        collectionView.frame = UIEdgeInsetsInsetRect(bounds, insets)
     }
     
     // MARK: Data

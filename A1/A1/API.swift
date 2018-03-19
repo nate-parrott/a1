@@ -12,12 +12,13 @@ class API {
     static let Shared = API()
     
     init() {
-        if let existingUid = UserDefaults.standard.string(forKey: "uid") {
-            uid = existingUid
-        } else {
-            uid = NSUUID().uuidString
-            UserDefaults.standard.set(uid, forKey: "uid")
-        }
+//        if let existingUid = UserDefaults.standard.string(forKey: "uid") {
+//            uid = existingUid
+//        } else {
+//            uid = NSUUID().uuidString
+//            UserDefaults.standard.set(uid, forKey: "uid")
+//        }
+        uid = "uid1" // REMOVE
     }
     
     let uid: String
