@@ -20,18 +20,21 @@ class ArticlesView : UIView, UICollectionViewDataSource {
     func _setupIfNeeded() {
         guard !_setupYet else { return }
         _setupYet = true
+        backgroundColor = UIColor.black
         addSubview(collectionView)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "article")
+        collectionView.register(ArticleCell.self, forCellWithReuseIdentifier: "article")
         collectionView.dataSource = self
+        collectionView.clipsToBounds = false
         var a = [API.Article]()
         while a.count < 20 {
             a.append(API.Article())
         }
+        articles = a
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.frame = bounds
+        collectionView.frame = UIEdgeInsetsInsetRect(bounds, safeAreaInsets)
     }
     
     // MARK: Data
@@ -52,7 +55,8 @@ class ArticlesView : UIView, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! ArticleCell
+        cell.article = articles[indexPath.item]
         let white = fmod(CGFloat(indexPath.item) * 0.30, 0.8) + 0.2
         cell.backgroundColor = UIColor(white: white, alpha: 1)
         return cell

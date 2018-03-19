@@ -21,4 +21,8 @@ class ViewController: UIViewController {
         super .viewDidLayoutSubviews()
         articlesView.frame = view.bounds
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }

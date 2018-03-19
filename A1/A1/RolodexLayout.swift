@@ -29,13 +29,20 @@ class RolodexLayout : UICollectionViewLayout {
         return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)))
     }
     
+    let _loadCellsAbove = 3
+    let _loadCellsBelow = 6
+    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        var index = max(0, Int(_scrolledToIndex - 1))
+        var index = max(0, Int(_scrolledToIndex - 1) - _loadCellsAbove)
         var attributes = [UICollectionViewLayoutAttributes]()
+        var extraCellsBelowRemaining = _loadCellsBelow
         while index < collectionView!.numberOfItems(inSection: 0) {
             let offset = _offset(forIndex: index)
             if offset > collectionView!.bounds.height {
-                break
+                if extraCellsBelowRemaining <= 0 {
+                    break
+                }
+                extraCellsBelowRemaining -= 1
             }
             attributes.append(layoutAttributesForItem(at: IndexPath(item: index, section: 0))!)
             index += 1
@@ -57,7 +64,7 @@ class RolodexLayout : UICollectionViewLayout {
     
     func _fade(forIndex index: Int) -> CGFloat {
         if CGFloat(index) < _scrolledToIndex {
-            return max(0, 1 - (_scrolledToIndex - CGFloat(index)))
+            return max(0, min(1, 2 - (_scrolledToIndex - CGFloat(index))))
         } else {
             return 1
         }
