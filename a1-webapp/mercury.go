@@ -12,7 +12,7 @@ import (
 
 type MercuryResponse struct {
 	Title string `json:"title" firestore:"title"`
-	Content string `json:"content" firestore:"-"` // omit from firestore
+	Content string `json:"content" firestore:"content"`
 	LeadImageUrl string `json:"lead_image_url" firestore:"lead_image_url"`
 	Date string `json:"date_published"`
 	Dek string `json:"dek" firestore:"dek"`

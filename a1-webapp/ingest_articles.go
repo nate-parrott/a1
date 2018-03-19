@@ -35,6 +35,13 @@ func createArticle(ctx context.Context, client *firestore.Client, url string, so
 			results <- createArticleResult{url: url, success: false}
 			return
 		}
+		// write mercury content to firestore:
+		_, mercurySaveErr := client.Collection("MercuryContent").Doc(articleId(url)).Set(ctx, mercury)
+		if mercurySaveErr != nil {
+			log.Errorf(ctx, "Error saving mercury content to firestore: %v", mercurySaveErr.Error())
+			results <- createArticleResult{url: url, success: false}
+			return
+		}
 		results <- createArticleResult{url: url, article: a, success: true}
 }
 

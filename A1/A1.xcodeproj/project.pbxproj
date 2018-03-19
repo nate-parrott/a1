@@ -15,6 +15,7 @@
 		354600BE205F03CC00610998 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 354600BD205F03CC00610998 /* GoogleService-Info.plist */; };
 		354600C2205F044700610998 /* ArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600C1205F044700610998 /* ArticlesView.swift */; };
 		354600C4205F045600610998 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600C3205F045600610998 /* API.swift */; };
+		354600C6205F07B300610998 /* RolodexLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600C5205F07B300610998 /* RolodexLayout.swift */; };
 		CE23A5E49835937CD1B755CC /* Pods_A1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326CDE2C58632492C85BE5F9 /* Pods_A1.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		354600BD205F03CC00610998 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		354600C1205F044700610998 /* ArticlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesView.swift; sourceTree = "<group>"; };
 		354600C3205F045600610998 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		354600C5205F07B300610998 /* RolodexLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolodexLayout.swift; sourceTree = "<group>"; };
 		BFF7B0F73BAD706E5D20F47D /* Pods-A1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A1.release.xcconfig"; path = "Pods/Target Support Files/Pods-A1/Pods-A1.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 				354600AB205F008100610998 /* AppDelegate.swift */,
 				354600AD205F008100610998 /* ViewController.swift */,
 				354600C1205F044700610998 /* ArticlesView.swift */,
+				354600C5205F07B300610998 /* RolodexLayout.swift */,
 				354600C3205F045600610998 /* API.swift */,
 				354600AF205F008100610998 /* Main.storyboard */,
 				354600B2205F008100610998 /* Assets.xcassets */,
@@ -245,6 +248,7 @@
 			files = (
 				354600C2205F044700610998 /* ArticlesView.swift in Sources */,
 				354600AE205F008100610998 /* ViewController.swift in Sources */,
+				354600C6205F07B300610998 /* RolodexLayout.swift in Sources */,
 				354600C4205F045600610998 /* API.swift in Sources */,
 				354600AC205F008100610998 /* AppDelegate.swift in Sources */,
 			);
@@ -387,6 +391,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VPN8ZW6EAC;
 				INFOPLIST_FILE = A1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.A1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -403,6 +408,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VPN8ZW6EAC;
 				INFOPLIST_FILE = A1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.A1;
 				PRODUCT_NAME = "$(TARGET_NAME)";

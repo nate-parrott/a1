@@ -22,4 +22,8 @@ class API {
     
     let uid: String
     let baseURL = "https://a1-webapp-2.appspot.com"
+    
+    class Article {
+        
+    }
 }
