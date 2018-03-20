@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"google.golang.org/appengine/log"
 	"cloud.google.com/go/firestore"
+	"strings"
 )
 
 func (t TwitterToken) Api(ctx context.Context) *anaconda.TwitterApi  {
@@ -47,7 +48,7 @@ func articleStubsFromTweets(tweets []anaconda.Tweet) []ArticleStub {
 		if !tweet.Retweeted {
 			articleUrl := urlFromTweet(tweet)
 			if len(articleUrl) > 0 {
-				stubs = append(stubs, ArticleStub{Url: normalizeUrl(articleUrl), Source: tweet.User.ScreenName})
+				stubs = append(stubs, ArticleStub{Url: normalizeUrl(articleUrl), Source: strings.ToLower(tweet.User.ScreenName)})
 			}
 		}
 	}

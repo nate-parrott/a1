@@ -42,6 +42,7 @@ func createArticle(ctx context.Context, client *firestore.Client, url string, so
 			results <- createArticleResult{url: url, success: false}
 			return
 		}
+		log.Infof(ctx, "Ingested new article: %v", a.CanonicalUrl)
 		results <- createArticleResult{url: url, article: a, success: true}
 }
 

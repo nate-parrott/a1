@@ -7,6 +7,7 @@ import (
 	"google.golang.org/appengine/log"
 	"context"
 	"cloud.google.com/go/firestore"
+	"strings"
 )
 
 func setupSubscribe() {
@@ -25,7 +26,7 @@ func (s Subscription) Id() string {
 
 func subscribe(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	handle := string(r.Form.Get("handle"))
+	handle := strings.ToLower(string(r.Form.Get("handle")))
 	userId := string(r.Form.Get("user_id"))
 
 	ctx := appengine.NewContext(r)
