@@ -29,12 +29,6 @@ class ArticlesView : UIView, UICollectionViewDataSource {
         var transform = CATransform3DIdentity
         transform.m34 = 1 / -500
         collectionView.layer.sublayerTransform = transform
-        
-        var a = [API.Article]()
-        while a.count < 20 {
-            a.append(API.Article())
-        }
-        articles = a
     }
     
     override func layoutSubviews() {

@@ -25,11 +25,16 @@ class ArticleCell: UICollectionViewCell {
     }
     
     let label = UILabel()
-    var article: API.Article?
+    var article: API.Article? {
+        didSet {
+            guard let a = article else { return }
+            label.text = a.title
+        }
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        label.frame = CGRect(x: 0, y: 10, width: 100, height: 50)
+        label.frame = CGRect(x: 0, y: 10, width: bounds.size.width, height: 70)
         layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
