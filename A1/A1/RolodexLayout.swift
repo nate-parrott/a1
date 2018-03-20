@@ -21,35 +21,19 @@ class RolodexLayout : UICollectionViewLayout {
     }
     
     var _scrollDistPerItem: CGFloat {
-        return 140
-    }
-    
-    let _decelRamp: CGFloat = 60
-    let _decelFactor: CGFloat = 2
-    var _additionalHeightToAccountForDecelRamp: CGFloat {
-        return _decelRamp * (1 - 1.0 / _decelFactor)
+        return 200
     }
     
     override var collectionViewContentSize: CGSize {
         guard let collection = collectionView else { return CGSize.zero }
-        return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)) + _additionalHeightToAccountForDecelRamp)
+        return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)))
     }
     
-    let _loadCellsAbove = 3
-    let _loadCellsBelow = 6
-    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        var index = max(0, Int(_scrolledToIndex - 1) - _loadCellsAbove)
+        var index = _lowestIndexToRender
+        // TODO: be more efficient
         var attributes = [UICollectionViewLayoutAttributes]()
-        var extraCellsBelowRemaining = _loadCellsBelow
-        while index < collectionView!.numberOfItems(inSection: 0) {
-            let offset = _offset(forIndex: index)
-            if offset > collectionView!.bounds.height {
-                if extraCellsBelowRemaining <= 0 {
-                    break
-                }
-                extraCellsBelowRemaining -= 1
-            }
+        while index <= _maxIndexToRender && index < collectionView!.numberOfItems(inSection: 0) {
             attributes.append(layoutAttributesForItem(at: IndexPath(item: index, section: 0))!)
             index += 1
         }
@@ -58,12 +42,12 @@ class RolodexLayout : UICollectionViewLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attribs = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-        let offset = _offset(forIndex: indexPath.item)
-        attribs.frame = CGRect(x: 0, y: offset + collectionView!.contentOffset.y, width: collectionView!.bounds.width, height: collectionView!.bounds.height)
+        let y = _yPosition(forIndex: indexPath.item)
+        attribs.frame = CGRect(x: 0, y: y + collectionView!.contentOffset.y, width: collectionView!.bounds.width, height: collectionView!.bounds.height)
         attribs.zIndex = indexPath.item
-        attribs.alpha = 1 - _amountToFade(forIndex: indexPath.item)
-        let zTranslate = 1 - offset / collectionView!.bounds.height
-        attribs.transform3D = CATransform3DMakeTranslation(0, 0, zTranslate * -30)
+        // attribs.alpha = 1 - _amountToFade(forIndex: indexPath.item)
+        // let zTranslate = 1 - offset / collectionView!.bounds.height
+        // attribs.transform3D = CATransform3DMakeTranslation(0, 0, zTranslate * -30)
         return attribs
     }
     
@@ -71,27 +55,36 @@ class RolodexLayout : UICollectionViewLayout {
         return collectionView!.contentOffset.y / _scrollDistPerItem
     }
     
-    func _amountToFade(forIndex index: Int) -> CGFloat {
-        let t = _scrolledToIndex
-        let fadeStartAtT = CGFloat(index + 1)
-        let fadeEndAtT = CGFloat(index + 2)
-        if t < fadeStartAtT {
-            return 0
-        } else if t > fadeEndAtT {
-            return 1
-        } else {
-            return (t - fadeStartAtT) / (fadeEndAtT - fadeStartAtT)
-        }
+    var _maxIndexToRender: Int {
+        return Int(ceil(_scrolledToIndex + _slideSpansNIndices))
     }
     
-    func _offset(forIndex index: Int) -> CGFloat {
-        var offset = max(0, (CGFloat(index) - _scrolledToIndex) * _scrollDistPerItem)
-        if offset < _decelRamp {
-            let t = (_decelRamp - offset) / _decelRamp
-            let decelFn = decelerationFunction(factor: _decelFactor)
-            offset = _decelRamp - decelFn(t) * _decelRamp
-        }
-        offset -= _additionalHeightToAccountForDecelRamp
-        return offset
+    var _lowestIndexToRender: Int {
+        return max(0, Int(floor(_scrolledToIndex) - 1))
     }
+    
+    func _yPosition(forIndex index: Int) -> CGFloat { // y position, fixed within the viewport
+        let viewportHeight = collectionView!.bounds.height
+        
+        // t = the distance from the bottom of the screen viewport,
+        // before applying the slowdown function.
+        
+        // at scroll=0, index 0 should have t = 1
+        // and index 3 should have t = 0
+        
+        // at scroll=3, index 3 should have t = 1
+        // index 6 should have t = 0
+        // index 7 should have t < 0
+        
+        // t is capped at 1
+        
+        let t = 1 - (CGFloat(index) - _scrolledToIndex) / (_slideSpansNIndices - 1)
+        return viewportHeight * (1 - _slowdownCurve(min(1, t)))
+    }
+    
+    let _slideSpansNIndices: CGFloat = 4
+}
+
+private func _slowdownCurve(_ t: CGFloat) -> CGFloat {
+    return 1 - pow(t - 1, 2)
 }
