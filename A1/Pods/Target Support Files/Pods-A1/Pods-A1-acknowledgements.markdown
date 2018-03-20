@@ -197,6 +197,10 @@ Some files from Intel carry the following license:
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+## Firebase
+
+Copyright 2018 Google
+
 ## FirebaseAnalytics
 
 Copyright 2018 Google

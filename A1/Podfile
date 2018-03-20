@@ -6,6 +6,7 @@ target 'A1' do
   use_frameworks!
 
   # Pods for A1
-	pod 'FirebaseFirestore'
+	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
 
 end
