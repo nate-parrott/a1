@@ -21,6 +21,7 @@
 		354600CC205F784B00610998 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600CB205F784B00610998 /* CGPointExtensions.swift */; };
 		354600CE2060D10100610998 /* API+Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600CD2060D10100610998 /* API+Paginator.swift */; };
 		354600D02060D11D00610998 /* API+Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600CF2060D11D00610998 /* API+Article.swift */; };
+		354600D2206373DE00610998 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600D1206373DE00610998 /* Easing.swift */; };
 		CE23A5E49835937CD1B755CC /* Pods_A1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326CDE2C58632492C85BE5F9 /* Pods_A1.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		354600CB205F784B00610998 /* CGPointExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		354600CD2060D10100610998 /* API+Paginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Paginator.swift"; sourceTree = "<group>"; };
 		354600CF2060D11D00610998 /* API+Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Article.swift"; sourceTree = "<group>"; };
+		354600D1206373DE00610998 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		BFF7B0F73BAD706E5D20F47D /* Pods-A1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A1.release.xcconfig"; path = "Pods/Target Support Files/Pods-A1/Pods-A1.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,6 +88,7 @@
 				354600AD205F008100610998 /* ViewController.swift */,
 				354600C1205F044700610998 /* ArticlesView.swift */,
 				354600C7205F6F1200610998 /* ArticleCell.swift */,
+				354600D1206373DE00610998 /* Easing.swift */,
 				354600C5205F07B300610998 /* RolodexLayout.swift */,
 				354600C9205F780200610998 /* Bezier.swift */,
 				354600CB205F784B00610998 /* CGPointExtensions.swift */,
@@ -270,6 +273,7 @@
 				354600CA205F780200610998 /* Bezier.swift in Sources */,
 				354600C4205F045600610998 /* API.swift in Sources */,
 				354600CC205F784B00610998 /* CGPointExtensions.swift in Sources */,
+				354600D2206373DE00610998 /* Easing.swift in Sources */,
 				354600AC205F008100610998 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

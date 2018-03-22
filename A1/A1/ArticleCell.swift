@@ -17,21 +17,16 @@ class ArticleCell: UICollectionViewCell {
         layer.shadowOpacity = 0.1
         layer.shadowRadius = 20
         
-        addSubview(clippedContainer)
-        clippedContainer.layer.cornerRadius = 16
-        clippedContainer.clipsToBounds = true
-        
         webView.isUserInteractionEnabled = false
-        clippedContainer.addSubview(webView)
+        addSubview(webView)
         
         title.backgroundColor = UIColor(white: 1, alpha: 0.9)
         title.font = UIFont.boldSystemFont(ofSize: 14)
         title.textAlignment = .center
         title.textColor = UIColor(white: 0.1, alpha: 1)
-        clippedContainer.addSubview(title)
+        addSubview(title)
     }
     
-    let clippedContainer = UIView()
     let webView = WKWebView(frame: .zero)
     let title = UILabel()
     
@@ -52,8 +47,7 @@ class ArticleCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        clippedContainer.frame = bounds
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: clippedContainer.layer.cornerRadius).cgPath
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 0).cgPath
         title.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 24)
         webView.frame = bounds
     }

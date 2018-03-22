@@ -20,24 +20,26 @@ class RolodexLayout : UICollectionViewLayout {
         return true // invalidate on resize + on scroll
     }
     
-    var _scrollDistPerItem: CGFloat {
-        return 200
+    let _itemsPerPage = 3
+    var _nPages: Int {
+        return max(1, Int(ceil(CGFloat(collectionView!.numberOfItems(inSection: 0)) / CGFloat(_itemsPerPage))))
     }
     
     override var collectionViewContentSize: CGSize {
         guard let collection = collectionView else { return CGSize.zero }
-        return CGSize(width: collection.bounds.width, height: _scrollDistPerItem * CGFloat(collection.numberOfItems(inSection: 0)))
+        return CGSize(width: collection.bounds.width, height: CGFloat(_nPages) * collection.bounds.height)
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        var index = _lowestIndexToRender
-        // TODO: be more efficient
-        var attributes = [UICollectionViewLayoutAttributes]()
-        while index <= _maxIndexToRender && index < collectionView!.numberOfItems(inSection: 0) {
-            attributes.append(layoutAttributesForItem(at: IndexPath(item: index, section: 0))!)
-            index += 1
+        let (fromPage, toPage, _) = _pagePosition()
+        var attribs = [UICollectionViewLayoutAttributes]()
+        let maxIndex = min(collectionView!.numberOfItems(inSection: 0), (toPage + 1) * _itemsPerPage)
+        var i = max(0, fromPage * _itemsPerPage)
+        while i < maxIndex {
+            attribs.append(layoutAttributesForItem(at: IndexPath(item: i, section: 0))!)
+            i += 1
         }
-        return attributes
+        return attribs
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
@@ -45,46 +47,40 @@ class RolodexLayout : UICollectionViewLayout {
         let y = _yPosition(forIndex: indexPath.item)
         attribs.frame = CGRect(x: 0, y: y + collectionView!.contentOffset.y, width: collectionView!.bounds.width, height: collectionView!.bounds.height)
         attribs.zIndex = indexPath.item
-        // attribs.alpha = 1 - _amountToFade(forIndex: indexPath.item)
-        // let zTranslate = 1 - offset / collectionView!.bounds.height
-        // attribs.transform3D = CATransform3DMakeTranslation(0, 0, zTranslate * -30)
         return attribs
     }
     
-    var _scrolledToIndex: CGFloat {
-        return collectionView!.contentOffset.y / _scrollDistPerItem
+    func _yPosition(forIndex index: Int) -> CGFloat {
+        let (fromPage, toPage, progress) = _pagePosition()
+        let fromPos = _yPosition(forIndex: index, onPage: fromPage)
+        let toPos = _yPosition(forIndex: index, onPage: toPage)
+        return _lerp(from: fromPos, to: toPos, t: progress)
     }
     
-    var _maxIndexToRender: Int {
-        return Int(ceil(_scrolledToIndex + _slideSpansNIndices))
+    func _yPosition(forIndex index: Int, onPage page: Int) -> CGFloat {
+        let pageForIndex = index / _itemsPerPage
+        if pageForIndex < page {
+            return 0
+        }
+        let positionIfOnCurrentPage = CGFloat(index % _itemsPerPage) / CGFloat(_itemsPerPage) * collectionView!.bounds.height
+        if pageForIndex > page {
+            return positionIfOnCurrentPage + collectionView!.bounds.height
+        } else {
+            return positionIfOnCurrentPage
+        }
     }
     
-    var _lowestIndexToRender: Int {
-        return max(0, Int(floor(_scrolledToIndex) - 1))
+    func _pagePosition() -> (fromPage: Int, toPage: Int, progress: CGFloat) {
+        let fractionalPage = collectionView!.contentOffset.y / collectionView!.bounds.height
+        let fromPage = Int(floor(fractionalPage))
+        return (fromPage: fromPage, toPage: fromPage + 1, progress: fractionalPage.truncatingRemainder(dividingBy: 1))
     }
-    
-    func _yPosition(forIndex index: Int) -> CGFloat { // y position, fixed within the viewport
-        let viewportHeight = collectionView!.bounds.height
-        
-        // t = the distance from the bottom of the screen viewport,
-        // before applying the slowdown function.
-        
-        // at scroll=0, index 0 should have t = 1
-        // and index 3 should have t = 0
-        
-        // at scroll=3, index 3 should have t = 1
-        // index 6 should have t = 0
-        // index 7 should have t < 0
-        
-        // t is capped at 1
-        
-        let t = 1 - (CGFloat(index) - _scrolledToIndex) / (_slideSpansNIndices - 1)
-        return viewportHeight * (1 - _slowdownCurve(min(1, t)))
-    }
-    
-    let _slideSpansNIndices: CGFloat = 4
 }
 
 private func _slowdownCurve(_ t: CGFloat) -> CGFloat {
     return 1 - pow(t - 1, 2)
+}
+
+private func _lerp(from: CGFloat, to: CGFloat, t: CGFloat) -> CGFloat {
+    return from * (1 - t) + to * t
 }

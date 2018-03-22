@@ -25,6 +25,7 @@ class ArticlesView : UIView, UICollectionViewDataSource {
         collectionView.register(ArticleCell.self, forCellWithReuseIdentifier: "article")
         collectionView.dataSource = self
         collectionView.clipsToBounds = false
+        collectionView.isPagingEnabled = true
         
         var transform = CATransform3DIdentity
         transform.m34 = 1 / -500
