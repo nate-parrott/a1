@@ -20,6 +20,7 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
         collectionView.register(SectionCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = UIColor.white
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
