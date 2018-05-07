@@ -37,6 +37,12 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         _paginator.refresh()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMMM d")
+        title = dateFormatter.string(from: Date())
     }
     
     var _paginator: API.Paginator!

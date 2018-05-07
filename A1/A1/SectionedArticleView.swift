@@ -52,7 +52,7 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
         super.layoutSubviews()
         collectionView.frame = bounds
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, Styling.collectionPadding, 0)
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, Styling.collectionPadding * 2, 0)
         layout.itemSize = CGSize(width: bounds.width, height: round(bounds.width / 1.61803398875))
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0

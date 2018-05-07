@@ -20,8 +20,8 @@ class BigImageArticleCell : UICollectionViewCell {
         layer.cornerRadius = cornerRadius
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.3
-        layer.shadowRadius = 15
-        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowRadius = 12
+        layer.shadowOffset = CGSize(width: 0, height: 2)
     }
     
     let cornerRadius: CGFloat = 10
@@ -60,7 +60,7 @@ class BigImageArticleCell : UICollectionViewCell {
             }
             URLSession.shared.dataTask(with: imageUrl) { [weak self] (dataOpt, _, _) in
                 let imageOpt = dataOpt != nil ? UIImage(data: dataOpt!) : nil
-                let lightText = (imageOpt?.areaAverage().hsva.v ?? 1) < 0.5
+                let lightText = (imageOpt?.areaAverage().hsva.v ?? 1) < 0.66
                 DispatchQueue.main.async {
                     guard let `self` = self, self.article?.canonical_url == article.canonical_url else { return }
                     self.gradient.set(topColor: UIColor(white: lightText ? 0 : 1, alpha: 0), bottomColor: UIColor(white: lightText ? 0 : 1, alpha: 0.7))

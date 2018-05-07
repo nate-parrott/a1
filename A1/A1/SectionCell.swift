@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SectionCell: UICollectionViewCell, UICollectionViewDataSource {
+class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     override init(frame: CGRect){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -23,7 +23,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource {
         contentView.addSubview(collectionView)
         collectionView.register(BigImageArticleCell.self, forCellWithReuseIdentifier: "article")
         collectionView.dataSource = self
-        collectionView.isPagingEnabled = true
+        collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor.white
         collectionView.clipsToBounds = false
@@ -47,16 +47,21 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let padding = Styling.collectionPadding
+        let spacing = Styling.collectionPadding
+        let nextCellPeek: CGFloat = Styling.collectionPadding
         
-        let height = label.sizeThatFits(bounds.size).height
-        label.frame = CGRect(x: padding, y: padding, width: bounds.width - padding * 2, height: height)
+        let labelHorizontalMargin = spacing + nextCellPeek
+        let labelAvailableWidth = bounds.width - labelHorizontalMargin * 2
+        let height = label.sizeThatFits(CGSize(width: labelAvailableWidth, height: bounds.height)).height
+        label.frame = CGRect(x: labelHorizontalMargin, y: Styling.collectionPadding, width: bounds.width - labelHorizontalMargin * 2, height: height)
+        
         collectionView.frame = CGRect(x: 0, y: label.frame.maxY, width: bounds.width, height: bounds.height - label.frame.maxY)
+        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSize(width: bounds.width - padding * 2, height: bounds.height - label.frame.maxY - padding * 2)
-        layout.sectionInset = UIEdgeInsetsMake(padding, padding, padding, padding)
-        layout.minimumInteritemSpacing = padding
+        layout.itemSize = CGSize(width: bounds.width - spacing * 2 - nextCellPeek * 2, height: bounds.height - label.frame.maxY - Styling.collectionPadding * 2)
+        layout.sectionInset = UIEdgeInsetsMake(Styling.collectionPadding, nextCellPeek + spacing, Styling.collectionPadding, nextCellPeek + spacing)
+        layout.minimumInteritemSpacing = spacing
     }
     
     // MARK: CollectionView
@@ -67,5 +72,12 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! BigImageArticleCell
         cell.article = section!.articles[indexPath.item]
         return cell
+    }
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let nArticles = section?.articles.count ?? 0
+        let pageLength = (layout.itemSize.width + layout.minimumInteritemSpacing)
+        let page = max(0, min(CGFloat(nArticles), round(targetContentOffset.pointee.x / pageLength)))
+        targetContentOffset.pointee.x = page * pageLength
     }
 }
