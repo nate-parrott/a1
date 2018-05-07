@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35367E67209FCE7300AA64A5 /* SectionedArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */; };
+		35367E69209FD00300AA64A5 /* SectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E68209FD00300AA64A5 /* SectionCell.swift */; };
+		35367E6B209FFFAA00AA64A5 /* Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E6A209FFFAA00AA64A5 /* Styling.swift */; };
 		354600AC205F008100610998 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AB205F008100610998 /* AppDelegate.swift */; };
 		354600AE205F008100610998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AD205F008100610998 /* ViewController.swift */; };
 		354600B1205F008100610998 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 354600AF205F008100610998 /* Main.storyboard */; };
@@ -28,6 +31,9 @@
 /* Begin PBXFileReference section */
 		2D635A35D493B33A5CC2F267 /* Pods-A1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-A1/Pods-A1.debug.xcconfig"; sourceTree = "<group>"; };
 		326CDE2C58632492C85BE5F9 /* Pods_A1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_A1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedArticleView.swift; sourceTree = "<group>"; };
+		35367E68209FD00300AA64A5 /* SectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCell.swift; sourceTree = "<group>"; };
+		35367E6A209FFFAA00AA64A5 /* Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styling.swift; sourceTree = "<group>"; };
 		354600A8205F008100610998 /* A1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		354600AB205F008100610998 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		354600AD205F008100610998 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +92,9 @@
 				354600CF2060D11D00610998 /* API+Article.swift */,
 				354600CD2060D10100610998 /* API+Paginator.swift */,
 				354600AD205F008100610998 /* ViewController.swift */,
+				35367E6A209FFFAA00AA64A5 /* Styling.swift */,
+				35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */,
+				35367E68209FD00300AA64A5 /* SectionCell.swift */,
 				354600C1205F044700610998 /* ArticlesView.swift */,
 				354600C7205F6F1200610998 /* ArticleCell.swift */,
 				354600D1206373DE00610998 /* Easing.swift */,
@@ -266,12 +275,15 @@
 			files = (
 				354600C2205F044700610998 /* ArticlesView.swift in Sources */,
 				354600D02060D11D00610998 /* API+Article.swift in Sources */,
+				35367E6B209FFFAA00AA64A5 /* Styling.swift in Sources */,
 				354600AE205F008100610998 /* ViewController.swift in Sources */,
 				354600C8205F6F1200610998 /* ArticleCell.swift in Sources */,
 				354600C6205F07B300610998 /* RolodexLayout.swift in Sources */,
 				354600CE2060D10100610998 /* API+Paginator.swift in Sources */,
+				35367E67209FCE7300AA64A5 /* SectionedArticleView.swift in Sources */,
 				354600CA205F780200610998 /* Bezier.swift in Sources */,
 				354600C4205F045600610998 /* API.swift in Sources */,
+				35367E69209FD00300AA64A5 /* SectionCell.swift in Sources */,
 				354600CC205F784B00610998 /* CGPointExtensions.swift in Sources */,
 				354600D2206373DE00610998 /* Easing.swift in Sources */,
 				354600AC205F008100610998 /* AppDelegate.swift in Sources */,

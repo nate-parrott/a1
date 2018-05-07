@@ -16,7 +16,21 @@ class ViewController: UIViewController {
         _paginator = API.Paginator(query: API.Shared.feed)
         _paginator.onUpdate = { [weak self] in
             guard let s = self else { return }
-            s.articlesView.articles = s._paginator.documents.map({ API.Article.from(document: $0)! })
+            
+            let articles = s._paginator.documents.map({ API.Article.from(document: $0)! })
+            var allSources = [String]()
+            var articlesBySource = [String: [API.Article]]()
+            for article in articles {
+                guard let source = article.first_source else { continue }
+                if articlesBySource[source] == nil {
+                    allSources.append(source)
+                    articlesBySource[source] = [article]
+                } else {
+                    articlesBySource[source]!.append(article)
+                }
+            }
+            let sections = allSources.map({ SectionedArticleView.Section(title: $0, articles: articlesBySource[$0]!) })
+            s.articlesView.sections = sections
         }
     }
     
@@ -27,7 +41,7 @@ class ViewController: UIViewController {
     
     var _paginator: API.Paginator!
     
-    let articlesView = ArticlesView()
+    let articlesView = SectionedArticleView()
 
     override func viewDidLayoutSubviews() {
         super .viewDidLayoutSubviews()
