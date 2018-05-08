@@ -34,6 +34,11 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
     }
     
     var section: SectionedArticleView.Section? {
+        willSet(val) {
+            if section?.title != val?.title {
+                collectionView.contentOffset = .zero
+            }
+        }
         didSet {
             collectionView.reloadData()
             guard let section = section else { return }
