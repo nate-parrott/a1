@@ -49,6 +49,7 @@ class BigImageArticleCell : UICollectionViewCell {
     
     var article: API.Article? {
         didSet {
+            setNeedsLayout()
             guard let article = self.article else { return }
             imageView.image = nil
             label.text = article.title
@@ -59,7 +60,11 @@ class BigImageArticleCell : UICollectionViewCell {
                 return
             }
             URLSession.shared.dataTask(with: imageUrl) { [weak self] (dataOpt, _, _) in
-                let imageOpt = dataOpt != nil ? UIImage(data: dataOpt!) : nil
+                var imageOpt = dataOpt != nil ? UIImage(data: dataOpt!) : nil
+                if let image = imageOpt, image.size.width < 200 || image.size.height < 200 {
+                    imageOpt = nil
+                }
+                
                 let lightText = (imageOpt?.areaAverage().hsva.v ?? 1) < 0.66
                 DispatchQueue.main.async {
                     guard let `self` = self, self.article?.canonical_url == article.canonical_url else { return }
