@@ -34,6 +34,9 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SectionCell
         cell.section = sections[indexPath.item]
+        cell.onTapArticle = { [weak self] (article) in
+            self?.onTapArticle?(article)
+        }
         return cell
     }
     
@@ -47,6 +50,7 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
             collectionView.reloadData()
         }
     }
+    var onTapArticle: ((API.Article) -> ())?
     // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()

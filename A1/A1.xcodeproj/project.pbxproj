@@ -14,6 +14,10 @@
 		35367E6F20A00F6400AA64A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E6E20A00F6400AA64A5 /* GradientView.swift */; };
 		35367E7120A0138E00AA64A5 /* UIImage+AverageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7020A0138E00AA64A5 /* UIImage+AverageColor.swift */; };
 		35367E7320A015B600AA64A5 /* UIColor+A1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7220A015B600AA64A5 /* UIColor+A1.swift */; };
+		35367E7520A12FB800AA64A5 /* SwipeAwayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */; };
+		35367E7920A1303500AA64A5 /* SSWDirectionalPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */; };
+		35367E7B20A134FE00AA64A5 /* StatusBarOpacity+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */; };
+		35367E7D20A1360C00AA64A5 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */; };
 		354600AC205F008100610998 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AB205F008100610998 /* AppDelegate.swift */; };
 		354600AE205F008100610998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AD205F008100610998 /* ViewController.swift */; };
 		354600B1205F008100610998 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 354600AF205F008100610998 /* Main.storyboard */; };
@@ -42,6 +46,12 @@
 		35367E6E20A00F6400AA64A5 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		35367E7020A0138E00AA64A5 /* UIImage+AverageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AverageColor.swift"; sourceTree = "<group>"; };
 		35367E7220A015B600AA64A5 /* UIColor+A1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+A1.swift"; sourceTree = "<group>"; };
+		35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeAwayViewController.swift; sourceTree = "<group>"; };
+		35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSWDirectionalPanGestureRecognizer.h; sourceTree = "<group>"; };
+		35367E7720A1303400AA64A5 /* A1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "A1-Bridging-Header.h"; sourceTree = "<group>"; };
+		35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSWDirectionalPanGestureRecognizer.m; sourceTree = "<group>"; };
+		35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatusBarOpacity+App.swift"; sourceTree = "<group>"; };
+		35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		354600A8205F008100610998 /* A1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		354600AB205F008100610998 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		354600AD205F008100610998 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,17 +117,23 @@
 				35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */,
 				35367E68209FD00300AA64A5 /* SectionCell.swift */,
 				35367E6C20A00F3700AA64A5 /* BigImageArticleCell.swift */,
+				35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */,
+				35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */,
+				35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */,
+				35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */,
 				354600C1205F044700610998 /* ArticlesView.swift */,
 				354600C7205F6F1200610998 /* ArticleCell.swift */,
 				354600D1206373DE00610998 /* Easing.swift */,
 				354600C5205F07B300610998 /* RolodexLayout.swift */,
 				354600C9205F780200610998 /* Bezier.swift */,
 				354600CB205F784B00610998 /* CGPointExtensions.swift */,
+				35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */,
 				354600AF205F008100610998 /* Main.storyboard */,
 				354600B2205F008100610998 /* Assets.xcassets */,
 				354600B4205F008100610998 /* LaunchScreen.storyboard */,
 				354600BD205F03CC00610998 /* GoogleService-Info.plist */,
 				354600B7205F008100610998 /* Info.plist */,
+				35367E7720A1303400AA64A5 /* A1-Bridging-Header.h */,
 			);
 			path = A1;
 			sourceTree = "<group>";
@@ -174,6 +190,7 @@
 				TargetAttributes = {
 					354600A7205F008100610998 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -285,11 +302,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35367E7B20A134FE00AA64A5 /* StatusBarOpacity+App.swift in Sources */,
 				354600C2205F044700610998 /* ArticlesView.swift in Sources */,
 				354600D02060D11D00610998 /* API+Article.swift in Sources */,
 				35367E6B209FFFAA00AA64A5 /* Styling.swift in Sources */,
 				35367E6D20A00F3700AA64A5 /* BigImageArticleCell.swift in Sources */,
+				35367E7D20A1360C00AA64A5 /* ArticleViewController.swift in Sources */,
+				35367E7920A1303500AA64A5 /* SSWDirectionalPanGestureRecognizer.m in Sources */,
 				354600AE205F008100610998 /* ViewController.swift in Sources */,
+				35367E7520A12FB800AA64A5 /* SwipeAwayViewController.swift in Sources */,
 				354600C8205F6F1200610998 /* ArticleCell.swift in Sources */,
 				35367E6F20A00F6400AA64A5 /* GradientView.swift in Sources */,
 				354600C6205F07B300610998 /* RolodexLayout.swift in Sources */,
@@ -440,6 +461,7 @@
 			baseConfigurationReference = 2D635A35D493B33A5CC2F267 /* Pods-A1.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VPN8ZW6EAC;
 				INFOPLIST_FILE = A1/Info.plist;
@@ -447,6 +469,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.A1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "A1/A1-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -457,6 +481,7 @@
 			baseConfigurationReference = BFF7B0F73BAD706E5D20F47D /* Pods-A1.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VPN8ZW6EAC;
 				INFOPLIST_FILE = A1/Info.plist;
@@ -464,6 +489,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nateparrott.A1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "A1/A1-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

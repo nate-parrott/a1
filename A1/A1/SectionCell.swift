@@ -40,6 +40,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
             label.text = section.title.uppercased()
         }
     }
+    var onTapArticle: ((API.Article) -> ())?
     
     // MARK: Views
     let label = UILabel()
@@ -72,6 +73,9 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! BigImageArticleCell
         cell.article = section!.articles[indexPath.item]
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onTapArticle?(section!.articles[indexPath.item])
     }
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout

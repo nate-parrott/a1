@@ -32,6 +32,10 @@ class ViewController: UIViewController {
             let sections = allSources.map({ SectionedArticleView.Section(title: $0, articles: articlesBySource[$0]!) })
             s.articlesView.sections = sections
         }
+        
+        articlesView.onTapArticle = { [weak self] (article) in
+            self?.show(article: article)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,5 +60,11 @@ class ViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func show(article: API.Article) {
+        let articleVC = ArticleViewController(nibName: nil, bundle: nil)
+        articleVC.article = article
+        articleVC.presentFrom(parent: self)
     }
 }
