@@ -31,4 +31,9 @@ class ArticleViewController: SwipeAwayViewController, WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let _ = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+        return webView.scrollView.contentSize.width > webView.scrollView.bounds.width
+    }
 }

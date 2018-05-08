@@ -39,7 +39,7 @@ extension API {
         var documents = [DocumentSnapshot]()
         var onUpdate: (() -> ())?
         
-        let docsPerPage = 20
+        let docsPerPage = 40
         
         func refresh() {
             guard !isLoading else { return }

@@ -29,4 +29,24 @@ class API {
     
     let uid: String
     let baseURL = "https://a1-webapp-2.appspot.com"
+    
+    // callback comes on arbitrary thread
+    func request(method: String, endpoint: String, params: [String: String], completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        var comps = URLComponents(string: baseURL + endpoint)!
+        comps.queryItems = Array(params.keys.map({ URLQueryItem(name: $0, value: params[$0]!) }))
+        var req = URLRequest(url: comps.url!)
+        req.httpMethod = method
+        URLSession.shared.dataTask(with: req, completionHandler: completion).resume()
+    }
+    
+    // callback comes on arbitrary thread
+    func subscribe(handle: String, completion: @escaping (Bool) -> ()) {
+        request(method: "POST", endpoint: "/subscribe", params: ["user_id": uid, "handle": handle]) { (_, respOpt, _) in
+            if let resp = respOpt as? HTTPURLResponse {
+                completion(resp.statusCode == 200)
+            } else {
+                completion(false)
+            }
+        }
+    }
 }

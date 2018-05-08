@@ -16,6 +16,9 @@ class ViewController: UIViewController {
         _paginator = API.Paginator(query: API.Shared.feed)
         _paginator.onUpdate = { [weak self] in
             guard let s = self else { return }
+            if s._paginator.hasNew {
+                s._paginator.refresh()
+            }
             
             let articles = s._paginator.documents.map({ API.Article.from(document: $0)! })
             var allSources = [String]()
@@ -66,5 +69,31 @@ class ViewController: UIViewController {
         let articleVC = ArticleViewController(nibName: nil, bundle: nil)
         articleVC.article = article
         articleVC.presentFrom(parent: self)
+    }
+    
+    @IBAction func tappedSubscribe(sender: UIBarButtonItem) {
+        let controller = UIAlertController(title: "New Subscription", message: "Enter a Twitter handle to subscribe to:", preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "Subscribe", style: .default, handler: { (_) in
+            guard let handleRaw = controller.textFields!.first!.text else { return }
+            let handle = handleRaw.replacingOccurrences(of: "@", with: "")
+            guard handle.count > 0 else { return }
+            API.Shared.subscribe(handle: handle, completion: { (success) in
+                DispatchQueue.main.async {
+                    if !success {
+                        let alert = UIAlertController(title: nil, message: "Failed to subscribe", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            })
+        }))
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        controller.addTextField { (field) in
+            field.placeholder = "@nytimes"
+            field.keyboardType = .twitter
+            field.autocorrectionType = .no
+            field.autocapitalizationType = .none
+        }
+        present(controller, animated: true, completion: nil)
     }
 }
