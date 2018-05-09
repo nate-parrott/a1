@@ -22,7 +22,7 @@ class ArticleViewController: SwipeAwayViewController, WKNavigationDelegate {
     var webView: WKWebView!
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if navigationAction.navigationType == .linkActivated, navigationAction.navigationType == .formSubmitted {
+        if navigationAction.navigationType == .linkActivated || navigationAction.navigationType == .formSubmitted {
             if let url = navigationAction.request.url {
                 present(SFSafariViewController(url: url), animated: true, completion: nil)
             }

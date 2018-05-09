@@ -1,0 +1,27 @@
+[debug] [2018-05-09T03:17:35.980Z] ----------------------------------------------------------------------
+[debug] [2018-05-09T03:17:35.982Z] Command:       /usr/local/bin/node /usr/local/bin/firebase database:profile --project a1-webapp-2
+[debug] [2018-05-09T03:17:35.983Z] CLI Version:   3.17.4
+[debug] [2018-05-09T03:17:35.983Z] Platform:      darwin
+[debug] [2018-05-09T03:17:35.983Z] Node Version:  v9.2.0
+[debug] [2018-05-09T03:17:35.983Z] Time:          Tue May 08 2018 23:17:35 GMT-0400 (EDT)
+[debug] [2018-05-09T03:17:35.983Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-09T03:17:35.991Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] [2018-05-09T03:17:35.991Z] > authorizing via signed-in user
+[debug] [2018-05-09T03:17:35.993Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-09T03:17:35.993Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/0ZiqMtfZquGlrbU0iXI0P9c1LFiu2xQco7_genDHHzFiKFPxV9UVbfh2GoH_oL2y',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue May 08 2018 23:17:35 GMT-0400 (EDT)
+[debug] [2018-05-09T03:17:36.201Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-09T03:17:36.211Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/a1-webapp-2  
+  
+ Tue May 08 2018 23:17:36 GMT-0400 (EDT)
+[debug] [2018-05-09T03:17:36.640Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-09T03:17:36.641Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/a1-webapp-2/tokens  
+  
+ Tue May 08 2018 23:17:36 GMT-0400 (EDT)
+[debug] [2018-05-09T03:17:37.026Z] <<< HTTP RESPONSE 200
