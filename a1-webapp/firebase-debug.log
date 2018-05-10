@@ -25,3 +25,30 @@
   
  Tue May 08 2018 23:17:36 GMT-0400 (EDT)
 [debug] [2018-05-09T03:17:37.026Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-10T01:45:34.208Z] ----------------------------------------------------------------------
+[debug] [2018-05-10T01:45:34.210Z] Command:       /usr/local/bin/node /usr/local/bin/firebase database:profile --project a1-webapp-2
+[debug] [2018-05-10T01:45:34.210Z] CLI Version:   3.17.4
+[debug] [2018-05-10T01:45:34.210Z] Platform:      darwin
+[debug] [2018-05-10T01:45:34.210Z] Node Version:  v9.2.0
+[debug] [2018-05-10T01:45:34.211Z] Time:          Wed May 09 2018 21:45:34 GMT-0400 (EDT)
+[debug] [2018-05-10T01:45:34.211Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-10T01:45:34.223Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] [2018-05-10T01:45:34.223Z] > authorizing via signed-in user
+[debug] [2018-05-10T01:45:34.225Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-10T01:45:34.225Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/0ZiqMtfZquGlrbU0iXI0P9c1LFiu2xQco7_genDHHzFiKFPxV9UVbfh2GoH_oL2y',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Wed May 09 2018 21:45:34 GMT-0400 (EDT)
+[debug] [2018-05-10T01:45:34.449Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-10T01:45:34.465Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/a1-webapp-2  
+  
+ Wed May 09 2018 21:45:34 GMT-0400 (EDT)
+[debug] [2018-05-10T01:45:35.460Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-10T01:45:35.461Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/a1-webapp-2/tokens  
+  
+ Wed May 09 2018 21:45:35 GMT-0400 (EDT)
+[debug] [2018-05-10T01:45:35.851Z] <<< HTTP RESPONSE 200

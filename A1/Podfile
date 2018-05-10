@@ -8,5 +8,7 @@ target 'A1' do
   # Pods for A1
 	pod 'Firebase/Core'
 	pod 'Firebase/Firestore'
-
+	pod 'BrightFutures', :git => 'https://github.com/Thomvis/BrightFutures.git', :tag => '6.0.1'
+	pod 'HanekeSwift', :git => 'https://github.com/Haneke/HanekeSwift.git', :tag => 'v0.11.1'
+	
 end

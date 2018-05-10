@@ -1,4 +1,5 @@
 import UIKit
+import Haneke
 
 class BigImageArticleCell : UICollectionViewCell {
     override init(frame: CGRect) {
@@ -59,23 +60,32 @@ class BigImageArticleCell : UICollectionViewCell {
                 label.isHidden = false
                 return
             }
-            URLSession.shared.dataTask(with: imageUrl) { [weak self] (dataOpt, _, _) in
-                var imageOpt = dataOpt != nil ? UIImage(data: dataOpt!) : nil
-                if let image = imageOpt, image.size.width < 200 || image.size.height < 200 {
-                    imageOpt = nil
+            
+            let onImage = { [weak self] (imageParam: UIImage?) in
+                DispatchQueue.global(qos: .default).async {
+                    var imageOpt = imageParam
+                    if let image = imageOpt, image.size.width < 200 || image.size.height < 200 {
+                        imageOpt = nil
+                    }
+                    
+                    let lightText = (imageOpt?.areaAverage().hsva.v ?? 1) < 0.66
+                    DispatchQueue.main.async {
+                        guard let `self` = self, self.article?.canonical_url == article.canonical_url else { return }
+                        self.gradient.set(topColor: UIColor(white: lightText ? 0 : 1, alpha: 0), bottomColor: UIColor(white: lightText ? 0 : 1, alpha: 0.7))
+                        UIView.transition(with: self.contentView, duration: 0.15, options: [.allowUserInteraction, .transitionCrossDissolve], animations: {
+                            self.label.textColor = lightText ? UIColor.white : UIColor.black
+                            self.imageView.image = imageOpt
+                            self.gradient.isHidden = (imageOpt == nil)
+                        }, completion: nil)
+                    }
                 }
-                
-                let lightText = (imageOpt?.areaAverage().hsva.v ?? 1) < 0.66
-                DispatchQueue.main.async {
-                    guard let `self` = self, self.article?.canonical_url == article.canonical_url else { return }
-                    self.gradient.set(topColor: UIColor(white: lightText ? 0 : 1, alpha: 0), bottomColor: UIColor(white: lightText ? 0 : 1, alpha: 0.7))
-                    UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction, .transitionCrossDissolve], animations: {
-                        self.label.textColor = lightText ? UIColor.white : UIColor.black
-                        self.imageView.image = imageOpt
-                        self.gradient.isHidden = (imageOpt == nil)
-                    }, completion: nil)
-                }
-            }.resume()
+            }
+            
+            _ = Shared.imageCache.fetch(URL: imageUrl).onSuccess { (image) in
+                onImage(image)
+                }.onFailure { (_) in
+                    onImage(nil)
+            }
         }
     }
 }
