@@ -20,7 +20,7 @@ class API {
 //            uid = NSUUID().uuidString
 //            UserDefaults.standard.set(uid, forKey: "uid")
 //        }
-        uid = "uid1" // REMOVE
+        uid = "uid2" // REMOVE
         feed = db.collection("Users").document(uid).collection("feed").order(by: "timestamp", descending: true)
     }
     

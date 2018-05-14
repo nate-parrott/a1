@@ -76,7 +76,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! BigImageArticleCell
-        cell.article = section!.articles[indexPath.item]
+        cell.model = BigImageArticleCell.Model(article: section!.articles[indexPath.item], showURL: section!.shouldDisplayURLs)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

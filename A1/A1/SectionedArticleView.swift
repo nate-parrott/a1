@@ -44,6 +44,10 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
     struct Section {
         let title: String
         let articles: [API.Article]
+        var shouldDisplayURLs: Bool {
+            let allHostnames = Set(articles.compactMap({ $0.canonical_url }).compactMap({ URL(string: $0) }).compactMap({ $0.host }))
+            return allHostnames.count > 1
+        }
     }
     var sections = [Section]() {
         didSet {
