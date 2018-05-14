@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import BrightFutures
-import Result
 
 /// Declaratively manages requests, with prioritization and caching
 class RequestManager {
@@ -29,23 +27,6 @@ class RequestManager {
         case normal = 0.2 // allow 5 concurrent requests
     }
     
-    class Completion {
-        init(queue: DispatchQueue, block: @escaping (Any?, Error?) -> ()) {
-            self.queue = queue
-            self.block = block
-        }
-        var _called = false
-        let block: (Any?, Error?) -> ()
-        let queue: DispatchQueue
-        func _callIfNeeded(result: Any?, err: Error?) {
-            guard !_called else { return }
-            _called = true
-            queue.async {
-                self.block(result, err)
-            }
-        }
-    }
-    
     // MARK: init
     
     let shared = RequestManager()
@@ -58,73 +39,54 @@ class RequestManager {
     // !! All internal work should be done on _queue
     
     let _queue = DispatchQueue(label: "RequestManager")
-    var _loadables = [Loadable]() {
-        didSet {
-            _log("\n\nreceived \(_loadables.count) loadables")
-            
-            // immediately callback for cached loadables:
-            for loadable in _loadables {
-                if let cached = _cache.object(forKey: loadable.key as NSString) {
-                    loadable.completion._callIfNeeded(result: cached.item, err: nil)
-                }
-            }
-            
-            // loadables that are `alreadyInflight` should be counted first:
-            for loadable in _loadables {
-                if loadable.alreadyInflight {
-                    _startIfNeeded(loadable: loadable)
-                }
-            }
-            _startLoadablesIfReady()
-        }
-    }
+    var _pending = Set<Loadable>()
+    var _remainingPoints: Float = 1
     
-    func _startLoadablesIfReady() {
-        _log("startLoadablesIfReady()")
-        // compute how many points are already inflight:
-        var remainingPoints: Float = 1
-        for inflight in _inflight.values {
-            remainingPoints -= inflight.points.rawValue
-        }
-        _log("\(_inflight.keys.count) inflight items worth \(1 - remainingPoints) points")
+    func _startPendingLoadablesIfAppropriate() {
+        _log("_startPendingLoadablesIfAppropriate()")
+        guard _remainingPoints > 0 else { return }
         // sort unstarted loadables by priority and start as many as we have left in our point budget:
-        let toLoad = _loadables.filter({ _inflight[$0.key] == nil }).sorted { (l1, l2) -> Bool in
+        let toLoad = _pending.filter({ _inflight[$0.key] == nil }).sorted { (l1, l2) -> Bool in
             return l1.priority.rawValue >= l2.priority.rawValue
         }
         for loadable in toLoad {
-            remainingPoints -= loadable.points.rawValue
-            if remainingPoints < 0 {
+            guard _inflight[loadable.key] == nil else { continue }
+            if _remainingPoints - loadable.points.rawValue < 0 {
                 break
             }
-            _startIfNeeded(loadable: loadable)
+            _kickOff(loadable: loadable)
         }
     }
     
-    func _startIfNeeded(loadable: Loadable) {
+    func _kickOff(loadable: Loadable) {
         let key = loadable.key
-        guard _inflight[key] == nil else { return }
         // add a task to the inflight dict:
         _inflight[key] = Task(key: key, points: loadable.points)
+        _remainingPoints -= loadable.points.rawValue
         // do the task:
         _log("Starting task \(key)")
-        _ = loadable.load().andThen { [weak self] (result) in
+        loadable.load() { [weak self] (result, err) in
             guard let `self` = self else { return }
             self._queue.async {
-                if let successResult = result.value {
+                if let successResult = result {
                     self._log("Task \(key) finished successfully")
                     // cache the result
                     self._cache.setObject(RequestManager.CacheObject(item: successResult), forKey: key as NSString)
                 } else {
                     self._log("Task \(key) failed")
                 }
+                // remove from inflight:
                 self._inflight.removeValue(forKey: key)
+                self._remainingPoints += loadable.points.rawValue
                 // send callbacks:
-                for loadable in self._loadables {
+                for loadable in Array(self._pending) {
                     if loadable.key == key {
-                        loadable.completion._callIfNeeded(result: result.value, err: result.error)
+                        // remove from pending:
+                        self._pending.remove(loadable)
+                        loadable._callCompletionIfNeeded(result: result, err: err)
                     }
                 }
-                self._startLoadablesIfReady()
+                self._startPendingLoadablesIfAppropriate()
             }
         }
     }
@@ -148,23 +110,67 @@ class RequestManager {
     }
     
     // MARK: API
-    
-    var loadables = [Loadable]() {
-        didSet {
-            let newLoadables = loadables
-            _queue.async {
-                self._loadables = newLoadables
+    func load(_ loadable: Loadable) {
+        _queue.async {
+            guard !self._pending.contains(loadable) else { return }
+            if let cached = self._cache.object(forKey: loadable.key as NSString) {
+                loadable._callCompletionIfNeeded(result: cached.item, err: nil)
+                return
             }
+            // add it to pending:
+            self._pending.insert(loadable)
+            if loadable.alreadyInflight {
+                if self._inflight[loadable.key] == nil {
+                    self._kickOff(loadable: loadable)
+                }
+                return
+            }
+            self._startPendingLoadablesIfAppropriate()
+        }
+    }
+    func cancel(_ loadable: Loadable) {
+        _queue.async {
+            self._pending.remove(loadable)
         }
     }
 }
 
-protocol Loadable {
-    var key: String { get }
-    var points: RequestManager.Points { get }
-    var priority: RequestManager.Priority { get }
-    func load() -> Future<Any, AnyError>
-    var completion: RequestManager.Completion { get } // called on an arbitrary queue
-    var alreadyInflight: Bool { get } // should be considered 'inflight' before load() is called upon it
+class Loadable : Hashable, Equatable {
+    init(key: String, points: RequestManager.Points, priority: RequestManager.Priority, load: @escaping (Completion) -> (), alreadyInflight: Bool, completionQueue: DispatchQueue, completion: @escaping Completion) {
+        self.key = key
+        self.points = points
+        self.priority = priority
+        self.load = load
+        self.alreadyInflight = alreadyInflight
+        self.completion = completion
+        self.completionQueue = completionQueue
+    }
+    
+    typealias Completion = ((Any?, Error?) -> ())
+    
+    let key: String
+    let points: RequestManager.Points
+    let priority: RequestManager.Priority
+    let load: ((Completion) -> ()) // called on an arbitrary queue
+    let alreadyInflight: Bool
+    let completion: Completion
+    let completionQueue: DispatchQueue
+    var _calledYet = false
+    
+    var hashValue: Int {
+        return ObjectIdentifier(self).hashValue
+    }
+    
+    static func == (lhs: Loadable, rhs: Loadable) -> Bool {
+        return lhs === rhs
+    }
+    
+    func _callCompletionIfNeeded(result: Any?, err: Error?) {
+        guard !_calledYet else { return }
+        _calledYet = true
+        completionQueue.async {
+            self.completion(result, err)
+        }
+    }
 }
 
