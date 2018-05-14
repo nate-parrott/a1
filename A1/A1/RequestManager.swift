@@ -49,6 +49,7 @@ class RequestManager {
         let toLoad = _pending.filter({ _inflight[$0.key] == nil }).sorted { (l1, l2) -> Bool in
             return l1.priority.rawValue >= l2.priority.rawValue
         }
+        // TODO: put pending requests in a heap so we don't need to re-sort every time
         for loadable in toLoad {
             guard _inflight[loadable.key] == nil else { continue }
             if _remainingPoints - loadable.points.rawValue < 0 {
