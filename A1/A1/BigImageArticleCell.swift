@@ -21,24 +21,27 @@ class BigImageArticleCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.addSubview(imageView)
+        contentView.addSubview(outerContainer)
+        outerContainer.addSubview(innerContainer)
+        
+        innerContainer.addSubview(imageView)
         imageView.backgroundColor = Styling.emptyArticleCellColor
         imageView.contentMode = .scaleAspectFill
         
-        contentView.addSubview(gradient)
+        innerContainer.addSubview(gradient)
         
-        contentView.addSubview(label)
+        innerContainer.addSubview(label)
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.numberOfLines = 0
         
-        contentView.layer.cornerRadius = cornerRadius
-        contentView.clipsToBounds = true
+        innerContainer.layer.cornerRadius = cornerRadius
+        innerContainer.clipsToBounds = true
         
-        layer.cornerRadius = cornerRadius
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.3
-        layer.shadowRadius = 12
-        layer.shadowOffset = CGSize(width: 0, height: 2)
+        outerContainer.layer.cornerRadius = cornerRadius
+        outerContainer.layer.shadowColor = UIColor.black.cgColor
+        outerContainer.layer.shadowOpacity = 0.3
+        outerContainer.layer.shadowRadius = 12
+        outerContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
     
     let cornerRadius: CGFloat = 10
@@ -47,15 +50,20 @@ class BigImageArticleCell : UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let outerContainer = UIView()
+    let innerContainer = UIView()
     let imageView = UIImageView()
     let gradient = GradientView()
     let label = UILabel()
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
+        outerContainer.bounds = self.bounds
+        outerContainer.center = CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2)
+        innerContainer.frame = outerContainer.bounds
         
-        imageView.frame = bounds
+        outerContainer.layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
+        imageView.frame = innerContainer.bounds
         
         let padding = Styling.collectionPadding
         let labelSize = label.sizeThatFits(CGSize(width: bounds.width - padding * 2, height: bounds.height - padding * 2))
@@ -79,11 +87,12 @@ class BigImageArticleCell : UICollectionViewCell {
                 label.isHidden = false
                 return
             }
-            
-            let onImage = { [weak self] (imageParam: UIImage?) in
+            URLSession.shared.dataTask(with: imageUrl) { [weak self] (dataOpt, _, _) in
                 DispatchQueue.global(qos: .default).async {
-                    var imageOpt = imageParam
-                    if let image = imageOpt, image.size.width < 200 || image.size.height < 200 {
+                    let imageOpt: UIImage?
+                    if let data = dataOpt, let image = UIImage(data: data), image.size.width >= 200 && image.size.height >= 200 {
+                        imageOpt = image
+                    } else {
                         imageOpt = nil
                     }
                     
@@ -98,13 +107,43 @@ class BigImageArticleCell : UICollectionViewCell {
                         }, completion: nil)
                     }
                 }
-            }
-            
-            _ = Shared.imageCache.fetch(URL: imageUrl).onSuccess { (image) in
-                onImage(image)
-                }.onFailure { (_) in
-                    onImage(nil)
-            }
+
+            }.resume()
+        }
+    }
+    
+    // MARK: Touches
+    var onTap: (() ->  ())?
+    
+    var _initialTouchPos: CGPoint?
+    let _pressAnimDuration: TimeInterval = 0.12
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        _pressed = true
+        _initialTouchPos = touches.first!.location(in: window!)
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let pos = touches.first!.location(in: window!)
+        if pos.distanceTo(_initialTouchPos!) > 4 {
+            _pressed = false
+        }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard _pressed else { return }
+        onTap?()
+        DispatchQueue.main.asyncAfter(deadline: .now() + _pressAnimDuration) {
+            self._pressed = false
+        }
+    }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        _pressed = false
+    }
+    var _pressed = false {
+        didSet(old) {
+            guard old != _pressed else { return }
+            UIView.animate(withDuration: _pressAnimDuration, delay: 0, options: .allowUserInteraction, animations: {
+                let scale: CGFloat = self._pressed ? 0.95 : 1
+                self.outerContainer.transform = CGAffineTransform(scaleX: scale, y: scale)
+            }, completion: nil)
         }
     }
 }

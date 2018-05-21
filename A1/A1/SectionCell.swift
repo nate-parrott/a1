@@ -64,6 +64,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
         
         collectionView.frame = CGRect(x: 0, y: label.frame.maxY, width: bounds.width, height: bounds.height - label.frame.maxY)
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        collectionView.delaysContentTouches = false
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: bounds.width - spacing * 2 - nextCellPeek * 2, height: bounds.height - label.frame.maxY - Styling.collectionPadding * 2)
@@ -77,11 +78,13 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! BigImageArticleCell
-        cell.model = BigImageArticleCell.Model(article: section!.articles[indexPath.item], showURL: section!.shouldDisplayURLs)
+        let article = section!.articles[indexPath.item]
+        cell.model = BigImageArticleCell.Model(article: article, showURL: section!.shouldDisplayURLs)
+        cell.onTap = { [weak self] in
+            guard let `self` = self else { return }
+            self.onTapArticle?(article)
+        }
         return cell
-    }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        onTapArticle?(section!.articles[indexPath.item])
     }
     
     var _pageAtStartOfSwipe: Int?
