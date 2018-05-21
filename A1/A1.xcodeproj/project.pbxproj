@@ -19,6 +19,8 @@
 		35367E7B20A134FE00AA64A5 /* StatusBarOpacity+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */; };
 		35367E7D20A1360C00AA64A5 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */; };
 		35367E7F20A3D70600AA64A5 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7E20A3D70600AA64A5 /* RequestManager.swift */; };
+		35367E8120B2875900AA64A5 /* ToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35367E8020B2875900AA64A5 /* ToolbarView.xib */; };
+		35367E8320B2876400AA64A5 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E8220B2876400AA64A5 /* ToolbarView.swift */; };
 		354600AC205F008100610998 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AB205F008100610998 /* AppDelegate.swift */; };
 		354600AE205F008100610998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AD205F008100610998 /* ViewController.swift */; };
 		354600B1205F008100610998 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 354600AF205F008100610998 /* Main.storyboard */; };
@@ -54,6 +56,8 @@
 		35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatusBarOpacity+App.swift"; sourceTree = "<group>"; };
 		35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		35367E7E20A3D70600AA64A5 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
+		35367E8020B2875900AA64A5 /* ToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToolbarView.xib; sourceTree = "<group>"; };
+		35367E8220B2876400AA64A5 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		354600A8205F008100610998 /* A1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		354600AB205F008100610998 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		354600AD205F008100610998 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 				35367E68209FD00300AA64A5 /* SectionCell.swift */,
 				35367E6C20A00F3700AA64A5 /* BigImageArticleCell.swift */,
 				35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */,
+				35367E8220B2876400AA64A5 /* ToolbarView.swift */,
+				35367E8020B2875900AA64A5 /* ToolbarView.xib */,
 				35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */,
 				35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */,
 				35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */,
@@ -222,6 +228,7 @@
 			files = (
 				354600B6205F008100610998 /* LaunchScreen.storyboard in Resources */,
 				354600BE205F03CC00610998 /* GoogleService-Info.plist in Resources */,
+				35367E8120B2875900AA64A5 /* ToolbarView.xib in Resources */,
 				354600B3205F008100610998 /* Assets.xcassets in Resources */,
 				354600B1205F008100610998 /* Main.storyboard in Resources */,
 			);
@@ -297,6 +304,7 @@
 			files = (
 				35367E7B20A134FE00AA64A5 /* StatusBarOpacity+App.swift in Sources */,
 				354600C2205F044700610998 /* ArticlesView.swift in Sources */,
+				35367E8320B2876400AA64A5 /* ToolbarView.swift in Sources */,
 				354600D02060D11D00610998 /* API+Article.swift in Sources */,
 				35367E6B209FFFAA00AA64A5 /* Styling.swift in Sources */,
 				35367E6D20A00F3700AA64A5 /* BigImageArticleCell.swift in Sources */,
