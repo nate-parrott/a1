@@ -27,6 +27,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor.white
         collectionView.clipsToBounds = false
+        collectionView.alwaysBounceHorizontal = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -82,11 +83,29 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onTapArticle?(section!.articles[indexPath.item])
     }
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    
+    var _pageAtStartOfSwipe: Int?
+    var pageLength: CGFloat {
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        return (layout.itemSize.width + layout.minimumInteritemSpacing)
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        _pageAtStartOfSwipe = Int(round(scrollView.contentOffset.x / pageLength))
+    }
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        // what page are we currently on?
+        var page = Int(round(scrollView.contentOffset.x / pageLength))
+        // are we swiping?
+        if velocity.x > 0 {
+            page += 1
+        } else if velocity.x < 0 {
+            page -= 1
+        }
+        let minPage = max(0, _pageAtStartOfSwipe! - 1)
         let nArticles = section?.articles.count ?? 0
-        let pageLength = (layout.itemSize.width + layout.minimumInteritemSpacing)
-        let page = max(0, min(CGFloat(nArticles), round(targetContentOffset.pointee.x / pageLength)))
-        targetContentOffset.pointee.x = page * pageLength
+        let maxPage = min(max(0, nArticles - 1), _pageAtStartOfSwipe! + 1)
+        page = max(minPage, min(maxPage, page))
+        targetContentOffset.pointee.x = CGFloat(page) * pageLength
     }
 }

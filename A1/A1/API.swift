@@ -13,7 +13,9 @@ class API {
     static let Shared = API()
     
     init() {
-        db.settings.areTimestampsInSnapshotsEnabled = true
+        let settings = db.settings
+        settings.areTimestampsInSnapshotsEnabled = true
+        db.settings = settings
 //        if let existingUid = UserDefaults.standard.string(forKey: "uid") {
 //            uid = existingUid
 //        } else {
