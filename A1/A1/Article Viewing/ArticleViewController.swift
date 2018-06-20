@@ -27,7 +27,7 @@ class ArticleViewController: SwipeAwayViewController, WKNavigationDelegate, Tool
             }
         }
     }
-    let loadableDisposer = LoadableDisposer()
+    let loadableDisposer = LoadableDisposer(requestManager: RequestManager.sharedForArticleHTML)
     
     var _toolbarHeight: CGFloat {
         return view.safeAreaInsets.bottom / 2 + 44

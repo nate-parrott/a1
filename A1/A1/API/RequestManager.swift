@@ -32,6 +32,7 @@ class RequestManager {
     // MARK: init
     
     static let shared = RequestManager()
+    static let sharedForArticleHTML = RequestManager()
     
     init() {
         
@@ -183,6 +184,13 @@ class Loadable : Hashable, Equatable {
 }
 
 class LoadableDisposer {
+    let requestManager: RequestManager
+    init(requestManager: RequestManager) {
+        self.requestManager = requestManager
+    }
+    convenience init() {
+        self.init(requestManager: RequestManager.shared)
+    }
     var loadable: Loadable? {
         didSet(oldOpt) {
             if let newLoadable = loadable {

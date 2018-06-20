@@ -35,5 +35,8 @@ func preloadArticleForImminentDisplay(_ article: API.Article) {
             ()
         }))
     }
-    // TODO: html preloading
+    if let htmlLoadable = loadArticleHTML(article: article, priority: RequestManager.Priorities.preloadSoon, points: RequestManager.Points.normal, completion: { (_, _) in
+    }) {
+        RequestManager.sharedForArticleHTML.load(htmlLoadable)
+    }
 }
