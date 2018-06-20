@@ -13,14 +13,14 @@ private func _formatMercuryRawHTML(article: API.Article, rawHTML: String) -> Str
     let title = article.title ?? ""
     let leadImageUrl = article.lead_image_url ?? ""
     // TODO: real HTML escaping
-    return header + "<img class='__a1_header' src=\"\(leadImageUrl)\" /> <h1 class='__a1_title'>\(title)</h1>" + rawHTML
+    return header + "<img class='__a1_header' src=\"\(leadImageUrl)\" /> <h1 class='__a1_title'>\(title)</h1> <div class='__a1_raw'>" + rawHTML + "</div>"
 }
 
 private func _loadMercuryContent(canonicalUrl: String, completion: @escaping ((String?) -> ())) {
     API.Shared.db.collection("MercuryContent").whereField("url", isEqualTo: canonicalUrl)
 .getDocuments() { (snapshot, err) in
     if let doc = snapshot?.documents.first, let content = doc.data()["content"] as? String {
-        completion(doc)
+        completion(content)
     } else {
         completion(nil)
     }
@@ -35,9 +35,9 @@ func loadArticleHTML(article: API.Article, priority: RequestManager.Priority, po
         return Loadable(key: key, points: points, priority: priority, load: { (completion) in
             _loadMercuryContent(canonicalUrl: canonicalUrl, completion: { (strOpt) in
                 if let html = strOpt {
-                    completion(_formatMercuryRawHTML(article: article, rawHTML: str).data(using: .utf8))
+                    completion(_formatMercuryRawHTML(article: article, rawHTML: html).data(using: .utf8), nil)
                 } else {
-                    completion(nil)
+                    completion(nil, nil)
                 }
             })
         }, alreadyInflight: false, completionQueue: DispatchQueue.main, completion: completion)
