@@ -25,6 +25,7 @@
 		35367E7F20A3D70600AA64A5 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E7E20A3D70600AA64A5 /* RequestManager.swift */; };
 		35367E8120B2875900AA64A5 /* ToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35367E8020B2875900AA64A5 /* ToolbarView.xib */; };
 		35367E8320B2876400AA64A5 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E8220B2876400AA64A5 /* ToolbarView.swift */; };
+		353FFE3D20DA35AC00BB5E2A /* RawHTMLHeader.html in Resources */ = {isa = PBXBuildFile; fileRef = 353FFE3C20DA35AC00BB5E2A /* RawHTMLHeader.html */; };
 		354600AC205F008100610998 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AB205F008100610998 /* AppDelegate.swift */; };
 		354600AE205F008100610998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354600AD205F008100610998 /* ViewController.swift */; };
 		354600B1205F008100610998 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 354600AF205F008100610998 /* Main.storyboard */; };
@@ -66,6 +67,7 @@
 		35367E7E20A3D70600AA64A5 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		35367E8020B2875900AA64A5 /* ToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToolbarView.xib; sourceTree = "<group>"; };
 		35367E8220B2876400AA64A5 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		353FFE3C20DA35AC00BB5E2A /* RawHTMLHeader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = RawHTMLHeader.html; sourceTree = "<group>"; };
 		354600A8205F008100610998 /* A1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		354600AB205F008100610998 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		354600AD205F008100610998 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */,
 				35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */,
 				35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */,
+				353FFE3C20DA35AC00BB5E2A /* RawHTMLHeader.html */,
 			);
 			path = "Article Viewing";
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				354600B6205F008100610998 /* LaunchScreen.storyboard in Resources */,
+				353FFE3D20DA35AC00BB5E2A /* RawHTMLHeader.html in Resources */,
 				354600BE205F03CC00610998 /* GoogleService-Info.plist in Resources */,
 				35367E8120B2875900AA64A5 /* ToolbarView.xib in Resources */,
 				354600B3205F008100610998 /* Assets.xcassets in Resources */,
