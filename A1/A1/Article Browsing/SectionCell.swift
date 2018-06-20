@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
     override init(frame: CGRect){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -79,6 +79,7 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "article", for: indexPath) as! BigImageArticleCell
         let article = section!.articles[indexPath.item]
+        preloadArticleForImminentDisplay(section!.articles[indexPath.item])
         cell.model = BigImageArticleCell.Model(article: article, showURL: section!.shouldDisplayURLs)
         cell.onTap = { [weak self] in
             guard let `self` = self else { return }
@@ -110,5 +111,13 @@ class SectionCell: UICollectionViewCell, UICollectionViewDataSource, UICollectio
         let maxPage = min(max(0, nArticles - 1), _pageAtStartOfSwipe! + 1)
         page = max(minPage, min(maxPage, page))
         targetContentOffset.pointee.x = CGFloat(page) * pageLength
+    }
+    // MARK: Prefetching
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let `section` = section else { return }
+        // kick off an image prefetch:
+        for idx in indexPaths {
+            preloadArticleForImminentDisplay(section.articles[idx.item])
+        }
     }
 }

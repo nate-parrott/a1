@@ -9,14 +9,25 @@ class ArticleViewController: SwipeAwayViewController, WKNavigationDelegate, Tool
         super.viewDidLoad()
         webView = WKWebView(frame: view.bounds)
         contentView.addSubview(webView)
-        guard let urlString = article.amp_url, let url = URL(string: urlString) else { return }
+//        guard let urlString = article.amp_url, let url = URL(string: urlString) else { return }
         webView.navigationDelegate = self
-        webView.load(URLRequest(url: url))
+//        webView.load(URLRequest(url: url))
         
         toolbar = UINib(nibName: "ToolbarView", bundle: nil).instantiate(withOwner: nil, options: nil).first! as! ToolbarView
         toolbar.delegate = self
         contentView.addSubview(toolbar)
+        
+        guard let baseUrlString = article.amp_url, let baseUrl = URL(string: baseUrlString) else { return }
+        
+        loadableDisposer.loadable = loadArticleHTML(article: article, priority: RequestManager.Priorities.immediate, points: RequestManager.Points.all) { [weak self] (dataOpt, errOpt) in
+            // TODO: show error messages
+            guard let `self` = self, let html = (dataOpt as? Data)?.stringByDetectingEncoding else { return }
+            DispatchQueue.main.async {
+                self.webView.loadHTMLString(html, baseURL: baseUrl)
+            }
+        }
     }
+    let loadableDisposer = LoadableDisposer()
     
     var _toolbarHeight: CGFloat {
         return view.safeAreaInsets.bottom / 2 + 44

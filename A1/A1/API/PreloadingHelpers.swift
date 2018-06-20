@@ -28,3 +28,12 @@ func createFullContentPreloadables(sections: [SectionedArticleView.Section]) -> 
     
     return preloadables
 }
+
+func preloadArticleForImminentDisplay(_ article: API.Article) {
+    if let imageStr = article.lead_image_url, let imageUrl = URL(string: imageStr) {
+        RequestManager.shared.load(createImageLoadable(url: imageUrl, priority: RequestManager.Priorities.preloadSoon, completion: { (_, _) in
+            ()
+        }))
+    }
+    // TODO: html preloading
+}
