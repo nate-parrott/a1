@@ -145,6 +145,16 @@
 			path = "Article Viewing";
 			sourceTree = "<group>";
 		};
+		3511A70920D9E8A700EC12DA /* Article Browsing */ = {
+			isa = PBXGroup;
+			children = (
+				35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */,
+				35367E68209FD00300AA64A5 /* SectionCell.swift */,
+				35367E6C20A00F3700AA64A5 /* BigImageArticleCell.swift */,
+			);
+			path = "Article Browsing";
+			sourceTree = "<group>";
+		};
 		3546009F205F008100610998 = {
 			isa = PBXGroup;
 			children = (
@@ -169,12 +179,10 @@
 				354600AB205F008100610998 /* AppDelegate.swift */,
 				354600AD205F008100610998 /* ViewController.swift */,
 				3511A70520D9E84600EC12DA /* API */,
+				3511A70920D9E8A700EC12DA /* Article Browsing */,
 				35367E6A209FFFAA00AA64A5 /* Styling.swift */,
 				3511A70420D9E83800EC12DA /* Utils */,
 				3511A70620D9E85200EC12DA /* Utility Views */,
-				35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */,
-				35367E68209FD00300AA64A5 /* SectionCell.swift */,
-				35367E6C20A00F3700AA64A5 /* BigImageArticleCell.swift */,
 				3511A70820D9E87300EC12DA /* Article Viewing */,
 				3511A70720D9E86A00EC12DA /* Unused */,
 				354600AF205F008100610998 /* Main.storyboard */,
