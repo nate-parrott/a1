@@ -90,6 +90,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3511A70420D9E83800EC12DA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				354600CB205F784B00610998 /* CGPointExtensions.swift */,
+				35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */,
+				35367E7020A0138E00AA64A5 /* UIImage+AverageColor.swift */,
+				35367E7220A015B600AA64A5 /* UIColor+A1.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		3511A70520D9E84600EC12DA /* API */ = {
+			isa = PBXGroup;
+			children = (
+				354600C3205F045600610998 /* API.swift */,
+				35367E7E20A3D70600AA64A5 /* RequestManager.swift */,
+				354600CF2060D11D00610998 /* API+Article.swift */,
+				354600CD2060D10100610998 /* API+Paginator.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		3511A70620D9E85200EC12DA /* Utility Views */ = {
+			isa = PBXGroup;
+			children = (
+				35367E6E20A00F6400AA64A5 /* GradientView.swift */,
+			);
+			path = "Utility Views";
+			sourceTree = "<group>";
+		};
+		3511A70720D9E86A00EC12DA /* Unused */ = {
+			isa = PBXGroup;
+			children = (
+				354600C9205F780200610998 /* Bezier.swift */,
+				354600C1205F044700610998 /* ArticlesView.swift */,
+				354600C7205F6F1200610998 /* ArticleCell.swift */,
+				354600D1206373DE00610998 /* Easing.swift */,
+				354600C5205F07B300610998 /* RolodexLayout.swift */,
+			);
+			path = Unused;
+			sourceTree = "<group>";
+		};
+		3511A70820D9E87300EC12DA /* Article Viewing */ = {
+			isa = PBXGroup;
+			children = (
+				35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */,
+				35367E8220B2876400AA64A5 /* ToolbarView.swift */,
+				35367E8020B2875900AA64A5 /* ToolbarView.xib */,
+				35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */,
+				35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */,
+				35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */,
+			);
+			path = "Article Viewing";
+			sourceTree = "<group>";
+		};
 		3546009F205F008100610998 = {
 			isa = PBXGroup;
 			children = (
@@ -112,31 +167,16 @@
 			isa = PBXGroup;
 			children = (
 				354600AB205F008100610998 /* AppDelegate.swift */,
-				354600C3205F045600610998 /* API.swift */,
-				35367E7E20A3D70600AA64A5 /* RequestManager.swift */,
-				354600CF2060D11D00610998 /* API+Article.swift */,
-				354600CD2060D10100610998 /* API+Paginator.swift */,
 				354600AD205F008100610998 /* ViewController.swift */,
+				3511A70520D9E84600EC12DA /* API */,
 				35367E6A209FFFAA00AA64A5 /* Styling.swift */,
-				35367E7020A0138E00AA64A5 /* UIImage+AverageColor.swift */,
-				35367E7220A015B600AA64A5 /* UIColor+A1.swift */,
-				35367E6E20A00F6400AA64A5 /* GradientView.swift */,
+				3511A70420D9E83800EC12DA /* Utils */,
+				3511A70620D9E85200EC12DA /* Utility Views */,
 				35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */,
 				35367E68209FD00300AA64A5 /* SectionCell.swift */,
 				35367E6C20A00F3700AA64A5 /* BigImageArticleCell.swift */,
-				35367E7C20A1360C00AA64A5 /* ArticleViewController.swift */,
-				35367E8220B2876400AA64A5 /* ToolbarView.swift */,
-				35367E8020B2875900AA64A5 /* ToolbarView.xib */,
-				35367E7420A12FB800AA64A5 /* SwipeAwayViewController.swift */,
-				35367E7620A12FFB00AA64A5 /* SSWDirectionalPanGestureRecognizer.h */,
-				35367E7820A1303400AA64A5 /* SSWDirectionalPanGestureRecognizer.m */,
-				354600C1205F044700610998 /* ArticlesView.swift */,
-				354600C7205F6F1200610998 /* ArticleCell.swift */,
-				354600D1206373DE00610998 /* Easing.swift */,
-				354600C5205F07B300610998 /* RolodexLayout.swift */,
-				354600C9205F780200610998 /* Bezier.swift */,
-				354600CB205F784B00610998 /* CGPointExtensions.swift */,
-				35367E7A20A134FE00AA64A5 /* StatusBarOpacity+App.swift */,
+				3511A70820D9E87300EC12DA /* Article Viewing */,
+				3511A70720D9E86A00EC12DA /* Unused */,
 				354600AF205F008100610998 /* Main.storyboard */,
 				354600B2205F008100610998 /* Assets.xcassets */,
 				354600B4205F008100610998 /* LaunchScreen.storyboard */,

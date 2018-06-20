@@ -65,4 +65,6 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
     }
+    // MARK: Preloading
+    
 }
