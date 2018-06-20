@@ -8,12 +8,19 @@
 
 import Foundation
 
+private func _formatMercuryRawHTML(article: API.Article, rawHTML: String) -> String {
+    let header = try! String(contentsOfFile: Bundle.main.path(forResource: "RawHTMLHeader", ofType: "html")!)
+    let title = article.title ?? ""
+    let leadImageUrl = article.lead_image_url ?? ""
+    // TODO: real HTML escaping
+    return header + "<img class='__a1_header' src=\"\(leadImageUrl)\" /> <h1 class='__a1_title'>\(title)</h1>" + rawHTML
+}
+
 private func _loadMercuryContent(canonicalUrl: String, completion: @escaping ((String?) -> ())) {
     API.Shared.db.collection("MercuryContent").whereField("url", isEqualTo: canonicalUrl)
 .getDocuments() { (snapshot, err) in
     if let doc = snapshot?.documents.first, let content = doc.data()["content"] as? String {
-        let header = try! String(contentsOfFile: Bundle.main.path(forResource: "RawHTMLHeader", ofType: "html")!)
-        completion(header + content)
+        completion(doc)
     } else {
         completion(nil)
     }
@@ -27,7 +34,11 @@ func loadArticleHTML(article: API.Article, priority: RequestManager.Priority, po
     if isMercury, let canonicalUrl = article.canonical_url {
         return Loadable(key: key, points: points, priority: priority, load: { (completion) in
             _loadMercuryContent(canonicalUrl: canonicalUrl, completion: { (strOpt) in
-                completion(strOpt?.data(using: .utf8), nil)
+                if let html = strOpt {
+                    completion(_formatMercuryRawHTML(article: article, rawHTML: str).data(using: .utf8))
+                } else {
+                    completion(nil)
+                }
             })
         }, alreadyInflight: false, completionQueue: DispatchQueue.main, completion: completion)
     } else {
