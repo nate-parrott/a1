@@ -52,6 +52,21 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
     var sections = [Section]() {
         didSet {
             collectionView.reloadData()
+            // Trigger low-priority preloading of all items:
+            let sections = self.sections
+            PreloadingHelpers.queue.async {
+                self._preloadables = createFullContentPreloadables(sections: sections)
+            }
+        }
+    }
+    var _preloadables = [Loadable]() {
+        didSet(old) {
+            for newItem in _preloadables {
+                RequestManager.shared.load(newItem)
+            }
+            for item in old {
+                RequestManager.shared.cancel(item)
+            }
         }
     }
     var onTapArticle: ((API.Article) -> ())?
@@ -65,6 +80,4 @@ class SectionedArticleView: UIView, UICollectionViewDelegate, UICollectionViewDa
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
     }
-    // MARK: Preloading
-    
 }

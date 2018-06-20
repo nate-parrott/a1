@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3511A70D20DA11D400EC12DA /* PreloadingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3511A70C20DA11D400EC12DA /* PreloadingHelpers.swift */; };
+		3511A70F20DA191600EC12DA /* ImageLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3511A70E20DA191600EC12DA /* ImageLoadable.swift */; };
 		35367E67209FCE7300AA64A5 /* SectionedArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */; };
 		35367E69209FD00300AA64A5 /* SectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E68209FD00300AA64A5 /* SectionCell.swift */; };
 		35367E6B209FFFAA00AA64A5 /* Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35367E6A209FFFAA00AA64A5 /* Styling.swift */; };
@@ -42,6 +44,8 @@
 /* Begin PBXFileReference section */
 		2D635A35D493B33A5CC2F267 /* Pods-A1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-A1/Pods-A1.debug.xcconfig"; sourceTree = "<group>"; };
 		326CDE2C58632492C85BE5F9 /* Pods_A1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_A1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3511A70C20DA11D400EC12DA /* PreloadingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreloadingHelpers.swift; sourceTree = "<group>"; };
+		3511A70E20DA191600EC12DA /* ImageLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadable.swift; sourceTree = "<group>"; };
 		35367E66209FCE7300AA64A5 /* SectionedArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedArticleView.swift; sourceTree = "<group>"; };
 		35367E68209FD00300AA64A5 /* SectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCell.swift; sourceTree = "<group>"; };
 		35367E6A209FFFAA00AA64A5 /* Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styling.swift; sourceTree = "<group>"; };
@@ -106,8 +110,10 @@
 			children = (
 				354600C3205F045600610998 /* API.swift */,
 				35367E7E20A3D70600AA64A5 /* RequestManager.swift */,
+				3511A70E20DA191600EC12DA /* ImageLoadable.swift */,
 				354600CF2060D11D00610998 /* API+Article.swift */,
 				354600CD2060D10100610998 /* API+Paginator.swift */,
+				3511A70C20DA11D400EC12DA /* PreloadingHelpers.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -362,8 +368,10 @@
 				35367E7520A12FB800AA64A5 /* SwipeAwayViewController.swift in Sources */,
 				354600C8205F6F1200610998 /* ArticleCell.swift in Sources */,
 				35367E6F20A00F6400AA64A5 /* GradientView.swift in Sources */,
+				3511A70D20DA11D400EC12DA /* PreloadingHelpers.swift in Sources */,
 				354600C6205F07B300610998 /* RolodexLayout.swift in Sources */,
 				354600CE2060D10100610998 /* API+Paginator.swift in Sources */,
+				3511A70F20DA191600EC12DA /* ImageLoadable.swift in Sources */,
 				35367E67209FCE7300AA64A5 /* SectionedArticleView.swift in Sources */,
 				35367E7120A0138E00AA64A5 /* UIImage+AverageColor.swift in Sources */,
 				354600CA205F780200610998 /* Bezier.swift in Sources */,

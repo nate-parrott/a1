@@ -55,6 +55,7 @@ class BigImageArticleCell : UICollectionViewCell {
     let imageView = UIImageView()
     let gradient = GradientView()
     let label = UILabel()
+    let imageLoader = LoadableDisposer()
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -87,10 +88,10 @@ class BigImageArticleCell : UICollectionViewCell {
                 label.isHidden = false
                 return
             }
-            URLSession.shared.dataTask(with: imageUrl) { [weak self] (dataOpt, _, _) in
+            imageLoader.loadable = createImageLoadable(url: imageUrl, priority: RequestManager.Priorities.userVisible, completion: { [weak self] (imageOptAsAnyObject, _) in
                 DispatchQueue.global(qos: .default).async {
                     let imageOpt: UIImage?
-                    if let data = dataOpt, let image = UIImage(data: data), image.size.width >= 200 && image.size.height >= 200 {
+                    if let image = imageOptAsAnyObject as? UIImage, image.size.width >= 200 && image.size.height >= 200 {
                         imageOpt = image
                     } else {
                         imageOpt = nil
@@ -107,8 +108,7 @@ class BigImageArticleCell : UICollectionViewCell {
                         }, completion: nil)
                     }
                 }
-
-            }.resume()
+            })
         }
     }
     

@@ -14,22 +14,24 @@ class RequestManager {
     // TODO: Use Reachability to retry failed requests when we come back online
     
     // MARK: Types
-    
-    enum Priority: Float {
-        case immediate = 10
-        case preloadSoon = 5
-        case preloadLater = 4
-        case optional = 1
+    typealias Priority = Float
+    struct Priorities {
+        static let immediate: Priority = 10
+        static let userVisible: Priority = 8
+        static let preloadSoon: Priority = 5
+        static let preloadLater: Priority = 4
+        static let optional: Priority = 1
+
     }
     
     enum Points: Float {
         case all = 1 // no other requests allowed
-        case normal = 0.2 // allow 5 concurrent requests
+        case normal = 0.1 // allow 10 concurrent requests
     }
     
     // MARK: init
     
-    let shared = RequestManager()
+    static let shared = RequestManager()
     
     init() {
         
@@ -44,10 +46,13 @@ class RequestManager {
     
     func _startPendingLoadablesIfAppropriate() {
         _log("_startPendingLoadablesIfAppropriate()")
+        if _pending.count == 0 {
+            _log("No pending items 👌")
+        }
         guard _remainingPoints > 0 else { return }
         // sort unstarted loadables by priority and start as many as we have left in our point budget:
         let toLoad = _pending.filter({ _inflight[$0.key] == nil }).sorted { (l1, l2) -> Bool in
-            return l1.priority.rawValue >= l2.priority.rawValue
+            return l1.priority >= l2.priority
         }
         // TODO: put pending requests in a heap so we don't need to re-sort every time
         for loadable in toLoad {
@@ -114,7 +119,9 @@ class RequestManager {
     func load(_ loadable: Loadable) {
         _queue.async {
             guard !self._pending.contains(loadable) else { return }
+            print("Received loadable: \(loadable.key)")
             if let cached = self._cache.object(forKey: loadable.key as NSString) {
+                print("   ✨ serving from cache")
                 loadable._callCompletionIfNeeded(result: cached.item, err: nil)
                 return
             }
@@ -137,7 +144,7 @@ class RequestManager {
 }
 
 class Loadable : Hashable, Equatable {
-    init(key: String, points: RequestManager.Points, priority: RequestManager.Priority, load: @escaping (Completion) -> (), alreadyInflight: Bool, completionQueue: DispatchQueue, completion: @escaping Completion) {
+    init(key: String, points: RequestManager.Points, priority: RequestManager.Priority, load: @escaping (@escaping Completion) -> (), alreadyInflight: Bool, completionQueue: DispatchQueue, completion: @escaping Completion) {
         self.key = key
         self.points = points
         self.priority = priority
@@ -152,7 +159,7 @@ class Loadable : Hashable, Equatable {
     let key: String
     let points: RequestManager.Points
     let priority: RequestManager.Priority
-    let load: ((Completion) -> ()) // called on an arbitrary queue
+    let load: ((@escaping Completion) -> ()) // called on an arbitrary queue
     let alreadyInflight: Bool
     let completion: Completion
     let completionQueue: DispatchQueue
@@ -175,3 +182,20 @@ class Loadable : Hashable, Equatable {
     }
 }
 
+class LoadableDisposer {
+    var loadable: Loadable? {
+        didSet(oldOpt) {
+            if let newLoadable = loadable {
+                RequestManager.shared.load(newLoadable)
+            }
+            if let old = oldOpt {
+                RequestManager.shared.cancel(old)
+            }
+        }
+    }
+    deinit {
+        if let old = loadable {
+            RequestManager.shared.cancel(old)
+        }
+    }
+}
